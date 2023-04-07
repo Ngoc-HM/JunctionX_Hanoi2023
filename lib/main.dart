@@ -86,7 +86,11 @@ class _MyAppState extends State<MyApp> {
               height: 56,
               child: ElevatedButton(
                 onPressed: () {},
-                child: Text("Đăng nhập"),
+                child: Text(
+                  "Đăng nhập",
+                  // cho chữ đăng nhập to hơn
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
               ),
             ),
           ],
