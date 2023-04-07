@@ -1,14 +1,7 @@
 import 'package:flutter/material.dart';
-import './menuLogin/menuLogin.dart';
+import '../main.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
+class _MenuLogin extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -80,15 +73,7 @@ class _MyAppState extends State<MyApp> {
                           fontWeight: FontWeight.bold),
                     )
                   ]),
-            ),
-            SizedBox(
-              width: double.infinity,
-              height: 56,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: Text("Đăng nhập"),
-              ),
-            ),
+            )
           ],
         ),
       )),
