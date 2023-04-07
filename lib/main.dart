@@ -25,8 +25,8 @@ class _MyAppState extends State<MyApp> {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
               child: Container(
-                width: 70,
-                height: 70,
+                width: 90,
+                height: 90,
                 padding: EdgeInsets.all(15),
                 child: FlutterLogo(),
                 decoration: BoxDecoration(
@@ -37,7 +37,7 @@ class _MyAppState extends State<MyApp> {
             ),
             // lời chào mừng
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 60),
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
               child: Text(
                 "Xin chào \nFintech Of JunctionX Hanoi 2023",
                 style: TextStyle(
@@ -127,6 +127,7 @@ class _MyAppState extends State<MyApp> {
                     ],
                   ),
                 )),
+            // thêm
           ],
         ),
       )),
