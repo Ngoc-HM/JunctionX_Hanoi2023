@@ -1,3 +1,4 @@
+import 'package:fintechdemo/src/blocs/login_bloc.dart';
 import 'package:flutter/material.dart';
 import './home_page.dart';
 
@@ -9,6 +10,9 @@ class LoginPage extends StatefulWidget {
 bool showPass = true;
 
 class _LoginPage extends State<LoginPage> {
+  // new bloc
+  LoginBloc bloc = new LoginBloc();
+  // tạo biến lấy text để xử lí data
   TextEditingController _usernameController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   var _usernameError = "Tài khoản không hợp lệ";
@@ -55,33 +59,42 @@ class _LoginPage extends State<LoginPage> {
             ),
             // Input tên đăng nhập
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
-              child: TextField(
-                controller: _usernameController,
-                style: TextStyle(fontSize: 18, color: Colors.black),
-                decoration: InputDecoration(
-                  labelText: "Tên đăng nhập",
-                  errorText: _usernameInvalid ? _usernameError : null,
-                  labelStyle: TextStyle(color: Color(0xff888888), fontSize: 15),
-                ),
-              ),
-            ),
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
+                child: StreamBuilder(
+                  stream: bloc.userStream,
+                  builder: (context, snapshot) => TextField(
+                    controller: _usernameController,
+                    style: TextStyle(fontSize: 18, color: Colors.black),
+                    decoration: InputDecoration(
+                      labelText: "Tên đăng nhập",
+                      errorText:
+                          snapshot.hasError ? snapshot.error.toString() : null,
+                      labelStyle:
+                          TextStyle(color: Color(0xff888888), fontSize: 15),
+                    ),
+                  ),
+                )),
             // Input mật khẩu
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
               child: Stack(
                   alignment: AlignmentDirectional.centerEnd,
                   children: <Widget>[
-                    TextField(
-                      controller: _passwordController,
-                      style: TextStyle(fontSize: 18, color: Colors.black),
-                      obscureText: showPass,
-                      decoration: InputDecoration(
-                        labelText: "Mật Khẩu",
-                        errorText: _passwordInvalid ? _passwordError : null,
-                        labelStyle:
-                            TextStyle(color: Color(0xff888888), fontSize: 15),
-                      ),
+                    StreamBuilder(
+                      stream: bloc.passStream,
+                      builder: ((context, snapshot) => TextField(
+                            controller: _passwordController,
+                            style: TextStyle(fontSize: 18, color: Colors.black),
+                            obscureText: showPass,
+                            decoration: InputDecoration(
+                              labelText: "Mật Khẩu",
+                              errorText: snapshot.hasError
+                                  ? snapshot.error.toString()
+                                  : null,
+                              labelStyle: TextStyle(
+                                  color: Color(0xff888888), fontSize: 15),
+                            ),
+                          )),
                     ),
                     TextButton(
                       onPressed: () {
@@ -106,23 +119,11 @@ class _LoginPage extends State<LoginPage> {
                 height: 56,
                 child: ElevatedButton(
                   onPressed: () {
-                    setState(() {
-                      if (_usernameController.text.length < 6 ||
-                          _usernameController.text.contains("@"))
-                        _usernameInvalid = true;
-                      else
-                        _usernameInvalid = false;
-
-                      if (_passwordController.text.length < 6)
-                        _passwordInvalid = true;
-                      else
-                        _passwordInvalid = false;
-
-                      if (!_usernameInvalid && !_passwordInvalid)
-                        print("Đăng nhập thành công");
+                    if (bloc.isValidInfo(
+                        _usernameController.text, _passwordController.text)) {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => HomePage()));
-                    });
+                    }
                   },
                   child: Text(
                     "Đăng nhập",
