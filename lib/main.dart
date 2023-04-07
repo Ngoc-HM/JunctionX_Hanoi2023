@@ -7,6 +7,8 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
+bool showPass = true;
+
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
@@ -67,20 +69,27 @@ class _MyAppState extends State<MyApp> {
                       children: <Widget>[
                         TextField(
                           style: TextStyle(fontSize: 18, color: Colors.black),
-                          obscureText: true,
+                          obscureText: showPass,
                           decoration: InputDecoration(
                             labelText: "Mật Khẩu",
                             labelStyle: TextStyle(
                                 color: Color(0xff888888), fontSize: 15),
                           ),
                         ),
-                        Text(
-                          "Hiển thị",
-                          style: TextStyle(
-                              color: Colors.blue,
-                              fontSize: 13,
-                              fontWeight: FontWeight.bold),
-                        )
+                        TextButton(
+                          onPressed: () {
+                            setState(() {
+                              showPass = !showPass;
+                            });
+                          },
+                          child: Text(
+                            showPass ? "Hiển thị" : "Ẩn",
+                            style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
                       ]),
                 ),
                 Padding(
