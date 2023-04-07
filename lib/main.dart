@@ -81,18 +81,52 @@ class _MyAppState extends State<MyApp> {
                     )
                   ]),
             ),
-            SizedBox(
-              width: double.infinity,
-              height: 56,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: Text(
-                  "Đăng nhập",
-                  // cho chữ đăng nhập to hơn
-                  style: TextStyle(color: Colors.white, fontSize: 18),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
+              child: SizedBox(
+                width: double.infinity,
+                height: 56,
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Text(
+                    "Đăng nhập",
+                    // cho chữ đăng nhập to hơn
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
                 ),
               ),
             ),
+            Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
+                child: Container(
+                  height: 130,
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Flexible(
+                        flex: 3,
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Bạn chưa có Tài Khoản ?",
+                            style: TextStyle(color: Colors.blue, fontSize: 15),
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        flex: 2,
+                        child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Quên Mật Khẩu",
+                            style: TextStyle(color: Colors.blue, fontSize: 15),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )),
           ],
         ),
       )),
