@@ -1,9 +1,9 @@
 class Validations {
   static bool isValidUser(String user) {
-    return user != null && user.length > 6 && user.contains("@");
+    return user != null && user.length >= 6 && user.contains("@gmail.com");
   }
 
   static bool isValidPassword(String password) {
-    return password != null && password.length > 6;
+    return password != null && password.length >= 6;
   }
 }
