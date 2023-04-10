@@ -1,37 +1,43 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(Home());
-
-class Home extends StatelessWidget {
-  // This widget is the root of your application.
+class Home extends StatefulWidget {
+  const Home({Key? key}): super(key:key);
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Hello World Demo Application',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: IndexHome(),
-    );
-  }
+  _Home createState() => _Home();
 }
-class IndexHome extends StatelessWidget {
+
+class _Home extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Icon(Icons.menu),
-        leadingWidth: 20,
-        title: Text("SOB EBANK"),
-        centerTitle: true,
-        backgroundColor: Colors.lightGreen,
-
-      ),
-      body: Center(
-          child:
-          Text(
-            'Hello World',
-          )
+      drawer: Drawer(),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            pinned: true,
+            expandedHeight: 200,
+            backgroundColor: Colors.lightGreen[700]!,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Center(child: Text("SOB Bank")),
+              titlePadding: EdgeInsets.all(0),
+            ),
+            actions: [],
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                return Container(
+                  color: index.isOdd ? Colors.white : Colors.black12,
+                  height: 100.0,
+                  child: Center(
+                    child: Text('$index', textScaleFactor: 5),
+                  ),
+                );
+              },
+              childCount: 20,
+            ),
+          ),
+        ],
       ),
     );
   }
