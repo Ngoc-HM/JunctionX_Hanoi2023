@@ -28,14 +28,13 @@ class _LoginPage extends State<LoginPage> {
         padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
         constraints: BoxConstraints.expand(),
         color: Colors.white,
-        child: Wrap(
-          alignment: WrapAlignment.center,
-          // mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: WrapCrossAlignment.start,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             // hình ảnh Flutter
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 40),
               child: Container(
                 width: 90,
                 height: 90,
@@ -49,7 +48,7 @@ class _LoginPage extends State<LoginPage> {
             ),
             // lời chào mừng
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 40, 0, 60),
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 60),
               child: Text(
                 "Xin chào \nFintech Of JunctionX Hanoi 2023",
                 style: TextStyle(
@@ -122,7 +121,7 @@ class _LoginPage extends State<LoginPage> {
                   onPressed: () {
                     if (bloc.isValidInfo(
                         _usernameController.text, _passwordController.text)) {
-                      Navigator.pushReplacement(context,
+                      Navigator.push(context,
                           MaterialPageRoute(builder: (context) => HomePage()));
                     }
                   },

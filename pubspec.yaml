@@ -16,7 +16,6 @@ dependencies:
   #firebase_databse:
 
   cupertino_icons: ^1.0.2
-  convex_bottom_bar: ^3.2.0
 
 dev_dependencies:
   flutter_test:
