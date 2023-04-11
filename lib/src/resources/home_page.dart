@@ -18,26 +18,42 @@ class _HomePage extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: new Drawer(),
       appBar: AppBar(
-        title: Text('Home Page'),
+        backgroundColor: Colors.transparent,
+        leading: Builder(
+            builder: (context) => IconButton(
+                onPressed: () => Scaffold.of(context).openDrawer(),
+                icon: const Icon(
+                    Icons.menu,
+                    color: Colors.lightGreen,
+                ),
+          ),
+        ),
+        elevation: 0,
       ),
       bottomNavigationBar: ConvexAppBar(
         style: TabStyle.fixedCircle,
         backgroundColor: Colors.blue,
         items: [
           TabItem(
+            title: 'Trang chủ',
             icon: Icon(Icons.home_filled),
           ),
           TabItem(
+            title: 'Danh bạ',
             icon: Icon(Icons.perm_contact_cal_rounded),
           ),
           TabItem(
+            title: 'Chuyển khoản',
             icon: Icon(Icons.sync_alt),
           ),
           TabItem(
+            title: 'Lịch sử',
             icon: Icon(Icons.history),
           ),
           TabItem(
+            title: 'Cài đặt',
             icon: Icon(Icons.settings),
           ),
         ],
