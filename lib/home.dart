@@ -15,11 +15,24 @@ class _Home extends State<Home> {
         slivers: <Widget>[
           SliverAppBar(
             pinned: true,
-            expandedHeight: 200,
+            expandedHeight: 400,
             backgroundColor: Colors.lightGreen[700]!,
             flexibleSpace: FlexibleSpaceBar(
-              title: Center(child: Text("SOB Bank")),
+              title: Center(child: Text("SOB Bank",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    background: Colors.white,
+                  ),
+                )
+              ),
               titlePadding: EdgeInsets.all(0),
+              background: FittedBox(
+                child: Image.network('https://media.istockphoto.com/id/865935122/photo/freshness-spring-green-onion-background.jpg?s=612x612&w=0&k=20&c=XBvhzQCSeQoHTwOWFXGpVJRRTDA4HM0BND39SGR85iA='),
+                fit: BoxFit.fill,
+              ),
+
             ),
             actions: [],
           ),
