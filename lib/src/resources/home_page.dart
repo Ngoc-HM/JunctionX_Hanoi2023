@@ -41,36 +41,45 @@ class _HomePage extends State<HomePage> {
         ),
         elevation: 0,
       ),
-      bottomNavigationBar: ConvexAppBar(
-        style: TabStyle.fixedCircle,
-        backgroundColor: Colors.lightGreen[700]!,
-        items: [
-          TabItem(
-            title: 'Trang chủ',
-            icon: Icon(Icons.home_filled),
-          ),
-          TabItem(
-            title: 'Danh bạ',
-            icon: Icon(Icons.perm_contact_cal_rounded),
-          ),
-          TabItem(
-            title: 'Chuyển khoản',
-            icon: Icon(Icons.sync_alt),
-          ),
-          TabItem(
-            title: 'Lịch sử',
-            icon: Icon(Icons.history),
-          ),
-          TabItem(
-            title: 'Cài đặt',
-            icon: Icon(Icons.settings),
-          ),
-        ],
-        initialActiveIndex: _selectedIndex,
-        onTap: _onItemTapped,
-      ),
+      bottomNavigationBar: BottomNavbar(selectedIndex: _selectedIndex, onItemTapped: _onItemTapped,),
       body: CurrentPage[_selectedIndex]
     );
   }
 }
 
+class BottomNavbar extends StatelessWidget {
+  final int selectedIndex;
+  final void Function(int) onItemTapped;
+  BottomNavbar({Key? key, required this.selectedIndex, required this.onItemTapped}): super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return ConvexAppBar(
+      style: TabStyle.fixedCircle,
+      backgroundColor: Colors.lightGreen[700]!,
+      items: [
+        TabItem(
+          title: 'Trang chủ',
+          icon: Icon(Icons.home_filled),
+        ),
+        TabItem(
+          title: 'Danh bạ',
+          icon: Icon(Icons.perm_contact_cal_rounded),
+        ),
+        TabItem(
+          title: 'Chuyển khoản',
+          icon: Icon(Icons.sync_alt),
+        ),
+        TabItem(
+          title: 'Lịch sử',
+          icon: Icon(Icons.history),
+        ),
+        TabItem(
+          title: 'Cài đặt',
+          icon: Icon(Icons.settings),
+        ),
+      ],
+      initialActiveIndex: selectedIndex,
+      onTap: onItemTapped,
+    );
+  }
+}
