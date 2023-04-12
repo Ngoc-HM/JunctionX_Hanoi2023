@@ -18,4 +18,4 @@ class User {
   }
 }
 
-User testUser = User("HOANG NGOC MINH", 10000000);
+User testUser = User("HOANG MINH NGOC", 10000000);

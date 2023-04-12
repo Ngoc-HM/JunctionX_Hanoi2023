@@ -159,6 +159,9 @@ class _LoginPage extends State<LoginPage> {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        width: 20,
+                      ),
                       Flexible(
                         flex: 2,
                         child: TextButton(

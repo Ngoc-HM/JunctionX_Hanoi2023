@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'login_page.dart';
+import 'registration_status.dart';
+
 class ResetPass extends StatelessWidget {
   bool showPass = true;
   @override
@@ -104,20 +107,53 @@ class ResetPass extends StatelessWidget {
                       ]),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 80),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 56,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: Text(
-                        "Đổi mật khẩu",
-                        // cho chữ đăng nhập to hơn
-                        style: TextStyle(color: Colors.white, fontSize: 18),
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                    child: Container(
+                      height: 130,
+                      width: double.infinity,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Flexible(
+                            //flex: 3,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => LoginPage()));
+                              },
+                              child: Text(
+                                "Quay lại",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15),
+                              ),
+                            ),
+                          ),
+                          // thêm một khoảng trống giữa 2 nút
+                          SizedBox(
+                            width: 60,
+                          ),
+                          Flexible(
+                            //flex: 2,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ResetPassWordSuccessfully()));
+                              },
+                              child: Text(
+                                "Đổi mật khẩu",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15),
+                              ),
+                            ),
+                          )
+                        ],
                       ),
-                    ),
-                  ),
-                ),
+                    )),
               ],
             )),
         // thêm

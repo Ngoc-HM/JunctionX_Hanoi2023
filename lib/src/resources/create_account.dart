@@ -1,4 +1,7 @@
+import 'package:fintechdemo/src/resources/registration_status.dart';
 import 'package:flutter/material.dart';
+
+import 'login_page.dart';
 
 class CreateAccount extends StatelessWidget {
   bool showPass = true;
@@ -21,7 +24,7 @@ class CreateAccount extends StatelessWidget {
               children: <Widget>[
                 // hình ảnh Flutter
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 0, 30),
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 20),
                   child: Container(
                     width: 90,
                     height: 90,
@@ -35,7 +38,7 @@ class CreateAccount extends StatelessWidget {
                 ),
                 // lời chào mừng
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 40, 0, 30),
+                  padding: const EdgeInsets.fromLTRB(0, 30, 0, 20),
                   child: Text(
                     "Trang đăng kí thành viên",
                     style: TextStyle(
@@ -46,7 +49,7 @@ class CreateAccount extends StatelessWidget {
                 ),
                 // Input tên đăng nhập
                 Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                     child: StreamBuilder(
                       builder: (context, snapshot) => TextField(
                         style: TextStyle(fontSize: 18, color: Colors.black),
@@ -61,7 +64,7 @@ class CreateAccount extends StatelessWidget {
                       ),
                     )),
                 Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                     child: StreamBuilder(
                       builder: (context, snapshot) => TextField(
                         style: TextStyle(fontSize: 18, color: Colors.black),
@@ -76,7 +79,7 @@ class CreateAccount extends StatelessWidget {
                       ),
                     )),
                 Padding(
-                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                     child: StreamBuilder(
                       builder: (context, snapshot) => TextField(
                         style: TextStyle(fontSize: 18, color: Colors.black),
@@ -134,20 +137,74 @@ class CreateAccount extends StatelessWidget {
                       ]),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 80),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 56,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: Text(
-                        "Đăng Ký",
-                        // cho chữ đăng nhập to hơn
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                    ),
-                  ),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                  child: Stack(
+                      alignment: AlignmentDirectional.centerEnd,
+                      children: <Widget>[
+                        StreamBuilder(
+                          builder: ((context, snapshot) => TextField(
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.black),
+                                decoration: InputDecoration(
+                                  labelText: "Nhập mật khẩu cấp 2",
+                                  errorText: snapshot.hasError
+                                      ? snapshot.error.toString()
+                                      : null,
+                                  labelStyle: TextStyle(
+                                      color: Color(0xff888888), fontSize: 15),
+                                ),
+                              )),
+                        ),
+                      ]),
                 ),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                    child: Container(
+                      height: 130,
+                      width: double.infinity,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Flexible(
+                            //flex: 3,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => LoginPage()));
+                              },
+                              child: Text(
+                                "Quay lại",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15),
+                              ),
+                            ),
+                          ),
+                          // thêm một khoảng trống giữa 2 nút
+                          SizedBox(
+                            width: 60,
+                          ),
+                          Flexible(
+                            //flex: 2,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            CreateNewAccountSuccessfully()));
+                              },
+                              child: Text(
+                                "Đăng kí",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    )),
               ],
             )),
         // thêm
