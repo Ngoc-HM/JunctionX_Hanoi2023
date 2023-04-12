@@ -1,6 +1,8 @@
 import 'package:fintechdemo/src/blocs/login_bloc.dart';
 import 'package:flutter/material.dart';
 import './home_page.dart';
+import './reset_pass.dart';
+import './create_account.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -18,7 +20,7 @@ class _LoginPage extends State<LoginPage> {
   var _usernameError = "Tài khoản không hợp lệ";
   bool _usernameInvalid = false;
   bool _passwordInvalid = false;
-  var _passwordError = "Mật khẩu không hợp lệ phải trên 6 kí tự";
+  var _passwordError = "Mật khẩu phải trên 6 kí tự";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +37,7 @@ class _LoginPage extends State<LoginPage> {
           children: <Widget>[
             // hình ảnh Flutter
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 40, 0, 40),
+              padding: const EdgeInsets.fromLTRB(0, 80, 0, 40),
               child: Container(
                 width: 90,
                 height: 90,
@@ -145,7 +147,12 @@ class _LoginPage extends State<LoginPage> {
                       Flexible(
                         flex: 3,
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CreateAccount()));
+                          },
                           child: Text(
                             "Bạn chưa có Tài Khoản ?",
                             style: TextStyle(color: Colors.blue, fontSize: 15),
@@ -155,7 +162,12 @@ class _LoginPage extends State<LoginPage> {
                       Flexible(
                         flex: 2,
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ResetPass()));
+                          },
                           child: Text(
                             "Quên Mật Khẩu",
                             style: TextStyle(color: Colors.blue, fontSize: 15),

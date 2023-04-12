@@ -16,7 +16,7 @@ class LoginBloc {
     _userController.sink.add("OK");
 
     if (!Validations.isValidPassword(password)) {
-      _passController.sink.addError("Mật khẩu không hợp lệ phải trên 6 kí tự");
+      _passController.sink.addError("Mật khẩu phải trên 6 kí tự");
       return false;
     }
     _userController.sink.add("OK");
