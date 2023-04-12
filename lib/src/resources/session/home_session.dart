@@ -35,10 +35,12 @@ class _Credit extends State<Credit> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Wrap(
+      children: <Widget>[Container(
+      constraints: BoxConstraints(minHeight: 200, maxHeight: 200),
       height: 200,
       width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
       padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
       decoration: BoxDecoration(
           color: Colors.lightGreen.shade300,
@@ -83,6 +85,7 @@ class _Credit extends State<Credit> {
           ,
         ],
       ),
-    );
+      )
+    ]);
   }
 }

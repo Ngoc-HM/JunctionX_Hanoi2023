@@ -1,5 +1,6 @@
 import 'package:fintechdemo/src/blocs/inside_transfer_bloc.dart';
 import 'package:flutter/material.dart';
+import 'transfer_page.dart';
 
 class Transfer extends StatefulWidget {
   Transfer({super.key});
@@ -48,6 +49,7 @@ class _Transfer extends State<Transfer> {
             children: _featureName,
             isSelected: _isFeatureSelected)
         ),
+        SizedBox(width: double.infinity, height: 5,),
         _feature[_stateIndex]
       ],
     );
@@ -65,7 +67,7 @@ class _Inside extends State<Inside> {
   InsideReceiverBloc bloc = InsideReceiverBloc();
   TextEditingController _receiverController = new TextEditingController();
   var _receiverError = "Tài khoản không hợp lệ";
-  bool _receiverInvalid = false;
+  bool _receiverInvalid = true;
   @override
   Widget build(BuildContext context) {
     return Wrap(
@@ -79,9 +81,12 @@ class _Inside extends State<Inside> {
                 onEditingComplete: () {
                   setState(() {
                     String? receiver = bloc.isValidInfo(_receiverController.text);
-                    if (receiver != "" && receiver != Null) _receiverName = receiver;
-                    else showDialog(context: context,
-                        builder: (BuildContext context) => AlertDialog(
+                    _receiverInvalid = (receiver == "" || receiver == Null);
+                    _receiverName = receiver;
+                    if(_receiverInvalid) {
+                      showDialog(context: context,
+                          builder: (BuildContext
+                               context) => AlertDialog(
                           title: Text("Lỗi"),
                           content: const Text('Không có tài khoản đã nhập'),
                           actions: <Widget>[
@@ -91,6 +96,7 @@ class _Inside extends State<Inside> {
                             ),
                           ],
                         ));
+                  _receiverInvalid = true;}
                   });
                 },
                 style: TextStyle(fontSize: 18, color: Colors.black),
@@ -104,9 +110,20 @@ class _Inside extends State<Inside> {
               ),
             )),
         Padding(
-          padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
-          child: Text("$_receiverName", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),)
-
+          padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+          child: Text("$_receiverName", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),),
+        Center(
+            child: ElevatedButton(
+            onPressed: !_receiverInvalid?( () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => TransferPage()));
+            }): null,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              child: Text('Chuyển khoản', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+              )
+            )
+        )
       ],
     );
   }
