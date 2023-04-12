@@ -3,6 +3,10 @@ import 'package:intl/intl.dart';
 import 'package:fintechdemo/src/blocs/user_information.dart';
 import 'dart:math';
 
+class HomeDoNotDestroyOnLoad {
+  static bool canSee = false;
+}
+
 class Credit extends StatefulWidget {
   Credit({super.key});
   @override
@@ -11,14 +15,18 @@ class Credit extends StatefulWidget {
 
 class _Credit extends State<Credit> {
   User _user = testUser;
-  bool _canSee = false;
+  bool _canSee = HomeDoNotDestroyOnLoad.canSee;
 
   void _userWantToSee() {
     setState(() {
-      if (_canSee) _canSee = false;
+      if (_canSee) {
+        _canSee = false;
+        HomeDoNotDestroyOnLoad.canSee = false;
+      }
       else {
         //more security stuff
         _canSee = true;
+        HomeDoNotDestroyOnLoad.canSee = true;
       }
     });
   }
@@ -63,8 +71,14 @@ class _Credit extends State<Credit> {
               _user.name,
               style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 35),
             ),
-          )
-          ,
+          ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            "SĐT/Email đăng kí: ${_user.accountName}",
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 17),
+          ),
+        ),
           Expanded(
               flex: 4,
               child: Row(

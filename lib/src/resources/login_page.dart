@@ -9,6 +9,24 @@ class LoginPage extends StatefulWidget {
 
 bool showPass = true;
 
+Route _createRoute() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => HomePage(pageIndex: 0),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(0.0, 1.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
+}
+
 class _LoginPage extends State<LoginPage> {
   // new bloc
   LoginBloc bloc = new LoginBloc();
@@ -123,7 +141,7 @@ class _LoginPage extends State<LoginPage> {
                     if (bloc.isValidInfo(
                         _usernameController.text, _passwordController.text)) {
                       Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => HomePage()));
+                      _createRoute());
                     }
                   },
                   child: Text(

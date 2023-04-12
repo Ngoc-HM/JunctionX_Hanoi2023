@@ -56,10 +56,32 @@ class _Transfer extends State<Transfer> {
   }
 }
 
+Route _createRoute() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => TransferPage(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(0.0, 1.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(
+        position: animation.drive(tween),
+        child: child,
+      );
+    },
+  );
+}
+
 class Inside extends StatefulWidget {
   Inside({super.key});
   @override
   _Inside createState() => _Inside();
+}
+
+class InsideDoNotDestroyOnLoad {
+  static String? inputReceiver = "";
 }
 
 class _Inside extends State<Inside> {
@@ -77,12 +99,14 @@ class _Inside extends State<Inside> {
             child: StreamBuilder(
               stream: bloc.receiverStream,
               builder: (context, snapshot) => TextField(
+                restorationId: InsideDoNotDestroyOnLoad.inputReceiver,
                 controller: _receiverController,
                 onEditingComplete: () {
                   setState(() {
                     String? receiver = bloc.isValidInfo(_receiverController.text);
                     _receiverInvalid = (receiver == "" || receiver == Null);
                     _receiverName = receiver;
+                    InsideDoNotDestroyOnLoad.inputReceiver = _receiverController.text;
                     if(_receiverInvalid) {
                       showDialog(context: context,
                           builder: (BuildContext
@@ -115,8 +139,7 @@ class _Inside extends State<Inside> {
         Center(
             child: ElevatedButton(
             onPressed: !_receiverInvalid?( () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => TransferPage()));
+              Navigator.push(context,_createRoute());
             }): null,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 12),

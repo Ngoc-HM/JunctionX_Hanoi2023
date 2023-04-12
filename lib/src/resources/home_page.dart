@@ -4,13 +4,15 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'sessions.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  int pageIndex = 0;
+  HomePage({Key? key, required this.pageIndex}): super(key: key);
   @override
-  _HomePage createState() => _HomePage();
+  _HomePage createState() => _HomePage(pageIndex: pageIndex);
 }
 
 class _HomePage extends State<HomePage> with TickerProviderStateMixin {
-  int _selectedIndex = 0;
+  int pageIndex = 0;
+  _HomePage({Key? key, required this.pageIndex});
   late TabController? _tabController;
   late List<Widget> CurrentPage = [ Credit(),
     Contact(),
@@ -35,7 +37,8 @@ class _HomePage extends State<HomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 5,
+      initialIndex: pageIndex,
+       length: 5,
       child: Scaffold(
       drawer: new Drawer(),
       appBar: AppBar(
