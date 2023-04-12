@@ -17,6 +17,7 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   convex_bottom_bar: ^3.2.0
+  intl: ^0.18.0
 
 dev_dependencies:
   flutter_test:
