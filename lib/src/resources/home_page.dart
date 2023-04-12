@@ -1,9 +1,15 @@
 import 'dart:math';
 
+import 'package:fintechdemo/src/resources/session/history_session.dart';
+import 'package:fintechdemo/src/resources/session/home_session.dart';
+import 'package:fintechdemo/src/resources/session/settings_session.dart';
+import 'package:fintechdemo/src/resources/session/transfer_session.dart';
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+
+import 'session/sessions.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,6 +19,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePage extends State<HomePage> {
   int _selectedIndex = 0;
+  late Map<int, Widget> CurrentPage = {
+    0: Credit(),
+    1: Contact(),
+    2: Transfer(),
+    3: History(),
+    4: Settings(),
+  };
 
   void _onItemTapped(int index) {
     setState(() {
@@ -64,93 +77,21 @@ class _HomePage extends State<HomePage> {
         initialActiveIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
-      body: Credit()
+      body: CurrentPage[_selectedIndex]
     );
   }
 }
 
-class Credit extends StatefulWidget {
-  Credit({super.key});
+class Contact extends StatefulWidget {
+  Contact({super.key});
   @override
-  _Credit createState() => _Credit();
+  _Contact createState() => _Contact();
 }
 
-class _Credit extends State<Credit> {
-  String _customName = "VU THI HANG";
-  int _money = 10000000;
-  bool _canSee = false;
-
-  void _userWantToSee() {
-    setState(() {
-      if (_canSee) _canSee = false;
-      else {
-        //more security stuff
-        _canSee = true;
-      }
-    });
-  }
-
-  String _period() {
-    int hour = DateTime.now().hour;
-    if (hour < 5) return "Chào cú đêm!";
-    if (hour < 11) return "Chào buổi sáng!";
-    if (hour < 14) return "Chào buổi trưa!";
-    if (hour < 18) return "Chào buổi chiều!";
-    if (hour < 22) return "Chào buổi tối!";
-    return "Ngủ đủ giấc nhá!";
-  }
-
+class _Contact extends State<Contact> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 200,
-      width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-      decoration: BoxDecoration(
-        color: Colors.lightGreen.shade300,
-        borderRadius: BorderRadius.all(Radius.circular(5))
-      ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-              flex: 2,
-              child: Text(
-              _period(),
-              style: TextStyle(color: Colors.black, fontWeight: FontWeight.w100, fontSize: 20),
-            ),)
-            ,
-            Expanded(
-              flex: 4,
-              child: Text(
-                  _customName,
-                  style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 35),
-                ),
-              )
-            ,
-            Expanded(
-              flex: 4,
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      _canSee ? NumberFormat("\$#,##0").format(_money) : "*" * max(_money.toString().length, 6),
-                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.w200, fontSize: 30),
-                    ),
-                    IconButton(
-                        onPressed: _userWantToSee,
-                        icon: Icon(_canSee ? Icons.visibility_off: Icons.visibility),
-                        color: Colors.black45,
-                    )
-                  ],
-                )
-              )
-            ,
-
-          ],
-        ),
-    );
+    return Center(child: Text("Contacts"));
   }
 }
+
