@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:fintechdemo/src/blocs/user_information.dart';
 import 'dart:math';
 
 class Credit extends StatefulWidget {
@@ -9,8 +10,7 @@ class Credit extends StatefulWidget {
 }
 
 class _Credit extends State<Credit> {
-  String _customName = "VU THI HANG";
-  int _money = 10000000;
+  User _user = testUser;
   bool _canSee = false;
 
   void _userWantToSee() {
@@ -58,7 +58,7 @@ class _Credit extends State<Credit> {
           Expanded(
             flex: 4,
             child: Text(
-              _customName,
+              _user.name,
               style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 35),
             ),
           )
@@ -69,7 +69,7 @@ class _Credit extends State<Credit> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    _canSee ? NumberFormat("\$#,##0").format(_money) : "*" * max(_money.toString().length, 6),
+                    _canSee ? NumberFormat("\$#,##0").format(_user.money) : "*" * max(_user.money.toString().length, 6),
                     style: TextStyle(color: Colors.black, fontWeight: FontWeight.w200, fontSize: 30),
                   ),
                   IconButton(

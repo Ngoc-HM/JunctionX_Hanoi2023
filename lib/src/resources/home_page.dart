@@ -1,15 +1,7 @@
-import 'dart:math';
-
-import 'package:fintechdemo/src/resources/session/history_session.dart';
-import 'package:fintechdemo/src/resources/session/home_session.dart';
-import 'package:fintechdemo/src/resources/session/settings_session.dart';
-import 'package:fintechdemo/src/resources/session/transfer_session.dart';
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 
-import 'session/sessions.dart';
+import 'sessions.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -79,19 +71,6 @@ class _HomePage extends State<HomePage> {
       ),
       body: CurrentPage[_selectedIndex]
     );
-  }
-}
-
-class Contact extends StatefulWidget {
-  Contact({super.key});
-  @override
-  _Contact createState() => _Contact();
-}
-
-class _Contact extends State<Contact> {
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text("Contacts"));
   }
 }
 
