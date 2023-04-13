@@ -2,7 +2,10 @@
 
 import 'dart:async';
 
+import 'package:fintechdemo/src/blocs/fire_base/fire_base_auth.dart';
+
 class AuthBloc {
+  var _firebaseAuth = FireAuth();
   StreamController _nameController = new StreamController();
   StreamController _HoTenController = new StreamController();
   StreamController _emailController = new StreamController();
@@ -58,6 +61,13 @@ class AuthBloc {
     }
     _password2Controller.sink.add("");
     return true;
+  }
+  void signUp(String name, String HoTen, String email, String phone,
+      String pass, String pass2 ,int sodu, Function onSuccess) {
+
+    _firebaseAuth.signUp(name, HoTen, email, phone, pass, pass2 ,1000000, onSuccess);
+
+
   }
 
   void dispose() {

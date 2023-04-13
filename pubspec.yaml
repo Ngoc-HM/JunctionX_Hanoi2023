@@ -12,12 +12,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  #firebase_auth:
-  #firebase_databse:
+  firebase_core: ^2.9.0
+  firebase_auth: ^4.4.1
+  firebase_database: ^10.1.0
 
   cupertino_icons: ^1.0.2
   convex_bottom_bar: ^3.2.0
-  intl: ^0.18.0
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
