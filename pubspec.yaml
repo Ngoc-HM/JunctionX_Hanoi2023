@@ -29,4 +29,6 @@ flutter:
   uses-material-design: true
   assets:
   - assets/images/thanhcong.png
+  - assets/images/unnamed.png
+  - assets/images/viettel-money.png
 

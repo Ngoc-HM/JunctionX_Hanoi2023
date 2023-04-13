@@ -37,21 +37,19 @@ class _LoginPage extends State<LoginPage> {
           children: <Widget>[
             // hình ảnh Flutter
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 80, 0, 40),
+              padding: const EdgeInsets.fromLTRB(0, 80, 0, 0),
               child: Container(
-                width: 90,
-                height: 90,
-                padding: EdgeInsets.all(15),
-                child: FlutterLogo(),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Color(0xffd8d8d8),
+                //child: FlutterLogo(),
+                child: Image.asset(
+                  "assets/images/viettel-money.png",
+                  width: 300,
+                  height: 200,
                 ),
               ),
             ),
             // lời chào mừng
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 40, 0, 60),
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 60),
               child: Text(
                 "Xin chào \nFintech Of JunctionX Hanoi 2023",
                 style: TextStyle(
@@ -69,12 +67,15 @@ class _LoginPage extends State<LoginPage> {
                     controller: _usernameController,
                     style: TextStyle(fontSize: 18, color: Colors.black),
                     decoration: InputDecoration(
-                      labelText: "Tên đăng nhập",
-                      errorText:
-                          snapshot.hasError ? snapshot.error.toString() : null,
-                      labelStyle:
-                          TextStyle(color: Color(0xff888888), fontSize: 15),
-                    ),
+                        labelText: "Tên đăng nhập",
+                        errorText: snapshot.hasError
+                            ? snapshot.error.toString()
+                            : null,
+                        border: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Color(0xffCED0D2), width: 1),
+                          borderRadius: BorderRadius.all(Radius.circular(6)),
+                        )),
                   ),
                 )),
             // Input mật khẩu
@@ -90,13 +91,16 @@ class _LoginPage extends State<LoginPage> {
                             style: TextStyle(fontSize: 18, color: Colors.black),
                             obscureText: showPass,
                             decoration: InputDecoration(
-                              labelText: "Mật Khẩu",
-                              errorText: snapshot.hasError
-                                  ? snapshot.error.toString()
-                                  : null,
-                              labelStyle: TextStyle(
-                                  color: Color(0xff888888), fontSize: 15),
-                            ),
+                                labelText: "Mật Khẩu",
+                                errorText: snapshot.hasError
+                                    ? snapshot.error.toString()
+                                    : null,
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Color(0xffCED0D2), width: 1),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(6)),
+                                )),
                           )),
                     ),
                     TextButton(
