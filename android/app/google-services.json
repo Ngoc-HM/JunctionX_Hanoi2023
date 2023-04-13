@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "937432265190",
+    "project_id": "junxhust",
+    "storage_bucket": "junxhust.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:937432265190:android:ab3f7919673136bf68a627",
+        "android_client_info": {
+          "package_name": "com.example.fintechdemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "937432265190-tbt7llnj5ok7tgk8dr90pvre013vlcbr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXTNEYh5prIGUPZ_it6rI2LFqSvo_dD9o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "937432265190-tbt7llnj5ok7tgk8dr90pvre013vlcbr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
