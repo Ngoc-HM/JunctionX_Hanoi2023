@@ -2,7 +2,7 @@ import 'package:fintechdemo/src/blocs/inside_transfer_bloc.dart';
 import 'package:fintechdemo/src/blocs/user_information.dart';
 import 'package:fintechdemo/src/dont_destroy_on_load.dart';
 import 'package:flutter/material.dart';
-import 'transfer_page.dart';
+import 'transferPage/transfer_page.dart';
 
 class Transfer extends StatefulWidget {
   Transfer({super.key});

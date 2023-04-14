@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:fintechdemo/src/resources/registration_status.dart';
 import 'package:flutter/material.dart';
 import 'login_page.dart';
@@ -50,21 +51,6 @@ class _CreateAccountState extends State<CreateAccount> {
               // mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: WrapCrossAlignment.start,
               children: <Widget>[
-                // hình ảnh Flutter
-                // Padding(
-                //   padding: const EdgeInsets.fromLTRB(0, 10, 0, 20),
-                //   child: Container(
-                //     width: 90,
-                //     height: 90,
-                //     padding: EdgeInsets.all(15),
-                //     child: FlutterLogo(),
-                //     decoration: BoxDecoration(
-                //       shape: BoxShape.circle,
-                //       color: Color(0xffd8d8d8),
-                //     ),
-                //   ),
-                // ),
-                // lời chào mừng
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 20, 0, 30),
                   child: Text(

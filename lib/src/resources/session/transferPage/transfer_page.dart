@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:intl/intl.dart';
+import 'package:fintechdemo/src/blocs/transferPage_bloc.dart';
 
 class TransferPage extends StatelessWidget {
+
   String senderID = "";
   String receiverID = "";
   int money = 0;
@@ -46,6 +48,14 @@ class TransferInfoScreen extends StatefulWidget {
 }
 
 class _TransferInfoScreen extends State<TransferInfoScreen> {
+  AuthBloc bloc = new AuthBloc();
+
+  TextEditingController _sotienController = new TextEditingController();
+  TextEditingController _tinnhanController = new TextEditingController();
+
+  bool _sotienVal = false;
+  bool _tinnhanVal = false;
+
   String senderID = "";
   String receiverID = "";
   int money = 0;
@@ -60,8 +70,8 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
         SizedBox(height: 10,),
         //Sender
         Padding(
-            padding: EdgeInsets.only(right: 50),
-            child: Container(
+          padding: EdgeInsets.only(right: 50),
+          child: Container(
               decoration: BoxDecoration(
                 color: Colors.lightGreen,
                 borderRadius: BorderRadius.only(bottomRight: Radius.circular(35)),
@@ -70,11 +80,11 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
               child: Row(
                 children: [
                   Expanded(
+                    flex: 2,
+                    child: Expanded(
                       flex: 2,
-                      child: Expanded(
-                          flex: 2,
-                          child: CircleAvatar(backgroundColor: Colors.white,child: FlutterLogo(),),
-                      ),
+                      child: CircleAvatar(backgroundColor: Colors.white,child: FlutterLogo(),),
+                    ),
                   ),
                   Expanded(
                     flex: 10,
@@ -82,7 +92,7 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
                   )
                 ],
               )
-            ),
+          ),
         ),
         SizedBox(height: 10,),
         //Receiver
@@ -105,11 +115,80 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
                   Expanded(
                     flex: 2,
                     child: CircleAvatar(backgroundColor: Colors.white,child: FlutterLogo(),),
-                    ),
+                  ),
                 ],
               )
           ),
         ),
+        SizedBox(
+          height: 10,
+        ),
+        // Input tên đăng nhập
+        Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+            child: StreamBuilder(
+              stream: bloc.sotienStream,
+              builder: (context, snapshot) => TextField(
+                keyboardType: TextInputType.number,
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly
+                ],
+                controller: _sotienController,
+                style: TextStyle(fontSize: 18, color: Colors.black),
+                decoration: InputDecoration(
+                    labelText: "Nhập số tiền cần chuyển",
+                    errorText: snapshot.hasError
+                        ? snapshot.error.toString()
+                        : null,
+
+                    border: OutlineInputBorder(
+                      borderSide:
+                      BorderSide(color: Color(0xffCED0D2), width: 1),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    )),
+              ),
+            )),
+        Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+            child: StreamBuilder(
+              stream: bloc.tinnhanStream,
+              builder: (context, snapshot) => TextField(
+
+                controller: _tinnhanController,
+                style: TextStyle(fontSize: 18, color: Colors.black),
+                decoration: InputDecoration(
+                    labelText: "Nhập tin nhắn cần chuyển",
+                    errorText: snapshot.hasError
+                        ? snapshot.error.toString()
+                        : null,
+                    border: OutlineInputBorder(
+                      borderSide:
+                      BorderSide(color: Color(0xffCED0D2), width: 1),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    )),
+
+              ),
+            )),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+          child: SizedBox(
+            width: double.infinity,
+            height: 56,
+            child: ElevatedButton(
+              onPressed: () {
+    if(bloc.isValidAcc(_sotienController.text, _tinnhanController.text)){
+    }
+    },
+              child: Text(
+                "Chuyển tiền",
+                // cho chữ đăng nhập to hơn
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+            ),
+          ),
+        ),
+
+        //Money
       ],
     );
   }
