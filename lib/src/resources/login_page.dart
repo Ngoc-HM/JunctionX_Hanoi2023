@@ -37,7 +37,7 @@ class _LoginPage extends State<LoginPage> {
           children: <Widget>[
             // hình ảnh Flutter
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 80, 0, 0),
+              padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
               child: Container(
                 //child: FlutterLogo(),
                 child: Image.asset(
@@ -49,7 +49,7 @@ class _LoginPage extends State<LoginPage> {
             ),
             // lời chào mừng
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 10, 0, 60),
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 30),
               child: Text(
                 "Xin chào \nFintech Of JunctionX Hanoi 2023",
                 style: TextStyle(
