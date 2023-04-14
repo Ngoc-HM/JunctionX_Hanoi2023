@@ -2,6 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:fintechdemo/src/blocs/user_information.dart';
 import 'dart:math';
+import 'dart:async';
+import 'package:flutter/services.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:local_auth/error_codes.dart' as auth_error;
+
+enum _SupportState {
+  unknown,
+  supported,
+  unsupported,
+}
+
+class HomeDoNotDestroyOnLoad {
+  static bool canSee = false;
+  static bool hasAuthenticate = false;
+}
 
 class Credit extends StatefulWidget {
   Credit({super.key});
@@ -10,17 +25,52 @@ class Credit extends StatefulWidget {
 }
 
 class _Credit extends State<Credit> {
+  //Authentication stuff
+  final LocalAuthentication auth = LocalAuthentication();
+  _SupportState _supportState = _SupportState.unknown;
+  bool didAuthenticate = false;
+  // Data
   User _user = testUser;
-  bool _canSee = false;
+  bool _canSee = HomeDoNotDestroyOnLoad.canSee;
 
-  void _userWantToSee() {
-    setState(() {
-      if (_canSee) _canSee = false;
-      else {
-        //more security stuff
-        _canSee = true;
+  @override
+  void initState() {
+    super.initState();
+    auth.isDeviceSupported().then(
+          (bool isSupported) => setState(() => _supportState = isSupported
+          ? _SupportState.supported
+          : _SupportState.unsupported),
+    );
+  }
+
+  void _userWantToSee() async {
+    try {
+      if (_canSee || HomeDoNotDestroyOnLoad.hasAuthenticate) return;
+      didAuthenticate = await auth.authenticate(
+          localizedReason: 'Xác nhận vân tay để hiện số dư tài khoản.',
+          biometricOnly: true);
+    }
+    on PlatformException catch (e) {
+      if (e.code == auth_error.notAvailable || e.code == auth_error.notEnrolled) {
+        print("Ủa alo");
+        didAuthenticate = false;
       }
-    });
+      else print(e.message);
+    }
+    finally {
+      setState(() {
+        if (_canSee) {
+          _canSee = false;
+          HomeDoNotDestroyOnLoad.canSee = false;
+        }
+        else if (didAuthenticate || HomeDoNotDestroyOnLoad.hasAuthenticate) {
+          //more security stuff
+          _canSee = true;
+          HomeDoNotDestroyOnLoad.canSee = true;
+          HomeDoNotDestroyOnLoad.hasAuthenticate = true;
+        }
+      });
+    }
   }
 
   String _period() {
@@ -35,10 +85,12 @@ class _Credit extends State<Credit> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Wrap(
+      children: <Widget>[Container(
+      constraints: BoxConstraints(minHeight: 200, maxHeight: 200),
       height: 200,
       width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+      margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
       padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
       decoration: BoxDecoration(
           color: Colors.lightGreen.shade300,
@@ -61,8 +113,14 @@ class _Credit extends State<Credit> {
               _user.name,
               style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 35),
             ),
-          )
-          ,
+          ),
+        Expanded(
+          flex: 2,
+          child: Text(
+            "SĐT/Email đăng kí: ${_user.accountName}",
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 17),
+          ),
+        ),
           Expanded(
               flex: 4,
               child: Row(
@@ -83,6 +141,7 @@ class _Credit extends State<Credit> {
           ,
         ],
       ),
-    );
+      )
+    ]);
   }
 }
