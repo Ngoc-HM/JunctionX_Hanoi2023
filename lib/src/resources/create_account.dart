@@ -258,22 +258,19 @@ class _CreateAccountState extends State<CreateAccount> {
                                   _password2Controller.text,
                                 )) {
                                   authBloc.signUp(
-                                    _nameController.text,
-                                    _HoTenController.text,
-                                    _emailController.text,
-                                    _phoneController.text,
-                                    _passwordController.text,
-                                    _password2Controller.text,
-                                    10000000, (){
+                                      _nameController.text,
+                                      _HoTenController.text,
+                                      _emailController.text,
+                                      _phoneController.text,
+                                      _passwordController.text,
+                                      _password2Controller.text,
+                                      10000000, () {
                                     Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
                                                 CreateNewAccountSuccessfully()));
-                                  }
-                                  );
-
-
+                                  });
                                 }
                               },
                               child: Text(
