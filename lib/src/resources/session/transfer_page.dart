@@ -50,19 +50,13 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
   String receiverID = "";
   int money = 0;
 
-  TransferBloc bloc = TransferBloc();
-  var _moneyController = new TextEditingController();
-  TextEditingController _contentController = new TextEditingController();
-  String content = "";
-  bool _isEditing = false;
-
   _TransferInfoScreen({Key? key, required this.senderID, required this.receiverID, required this.money});
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
+      children: [
         SizedBox(height: 10,),
         //Sender
         Padding(
@@ -116,67 +110,6 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
               )
           ),
         ),
-        SizedBox(height: 10,),
-        Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-            child: StreamBuilder(
-              stream: bloc.moneyStream,
-              builder: (context, snapshot) => TextField(
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                keyboardType: TextInputType.number,
-                restorationId: money.toString(),
-                controller: _moneyController,
-                onSubmitted: (curr) {
-                  setState(() {
-                    money = int.parse(_moneyController.text);
-                  });
-                },
-                style: TextStyle(fontSize: 18, color: Colors.black),
-                decoration: InputDecoration(
-                  labelText: "Số tiền",
-                  errorText:
-                  snapshot.hasError ? snapshot.error.toString() : null,
-                  labelStyle:
-                  TextStyle(color: Color(0xff888888), fontSize: 15),
-                ),
-              ),
-            )),
-        SizedBox(height: 10,),
-        Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-            child: StreamBuilder(
-              stream: bloc.contentStream,
-              builder: (context, snapshot) => TextField(
-                maxLength: 100,
-                keyboardType: TextInputType.text,
-                controller: _contentController,
-                onSubmitted: (curr) {
-                  setState(() {
-                    content = _contentController.text;
-                  });
-                },
-                style: TextStyle(fontSize: 18, color: Colors.black),
-                decoration: InputDecoration(
-                  labelText: "Nội dung",
-                  errorText:
-                  snapshot.hasError ? snapshot.error.toString() : null,
-                  labelStyle:
-                  TextStyle(color: Color(0xff888888), fontSize: 15),
-                ),
-              ),
-            )),
-        Center(
-            child: ElevatedButton(
-                onPressed: (money > 0 && !_isEditing)?( () {
-                  //Navigator.push(context,_createRoute());
-                  print("Hello 1/4");
-                }): null,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  child: Text('Chuyển tiền', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
-                )
-            )
-        )
       ],
     );
   }
