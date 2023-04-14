@@ -2,9 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:fintechdemo/src/blocs/user_information.dart';
 import 'dart:math';
+import 'dart:async';
+import 'package:flutter/services.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:local_auth/error_codes.dart' as auth_error;
+
+enum _SupportState {
+  unknown,
+  supported,
+  unsupported,
+}
 
 class HomeDoNotDestroyOnLoad {
   static bool canSee = false;
+  static bool hasAuthenticate = false;
 }
 
 class Credit extends StatefulWidget {
@@ -14,21 +25,52 @@ class Credit extends StatefulWidget {
 }
 
 class _Credit extends State<Credit> {
+  //Authentication stuff
+  final LocalAuthentication auth = LocalAuthentication();
+  _SupportState _supportState = _SupportState.unknown;
+  bool didAuthenticate = false;
+  // Data
   User _user = testUser;
   bool _canSee = HomeDoNotDestroyOnLoad.canSee;
 
-  void _userWantToSee() {
-    setState(() {
-      if (_canSee) {
-        _canSee = false;
-        HomeDoNotDestroyOnLoad.canSee = false;
+  @override
+  void initState() {
+    super.initState();
+    auth.isDeviceSupported().then(
+          (bool isSupported) => setState(() => _supportState = isSupported
+          ? _SupportState.supported
+          : _SupportState.unsupported),
+    );
+  }
+
+  void _userWantToSee() async {
+    try {
+      if (_canSee || HomeDoNotDestroyOnLoad.hasAuthenticate) return;
+      didAuthenticate = await auth.authenticate(
+          localizedReason: 'Xác nhận vân tay để hiện số dư tài khoản.',
+          biometricOnly: true);
+    }
+    on PlatformException catch (e) {
+      if (e.code == auth_error.notAvailable || e.code == auth_error.notEnrolled) {
+        print("Ủa alo");
+        didAuthenticate = false;
       }
-      else {
-        //more security stuff
-        _canSee = true;
-        HomeDoNotDestroyOnLoad.canSee = true;
-      }
-    });
+      else print(e.message);
+    }
+    finally {
+      setState(() {
+        if (_canSee) {
+          _canSee = false;
+          HomeDoNotDestroyOnLoad.canSee = false;
+        }
+        else if (didAuthenticate || HomeDoNotDestroyOnLoad.hasAuthenticate) {
+          //more security stuff
+          _canSee = true;
+          HomeDoNotDestroyOnLoad.canSee = true;
+          HomeDoNotDestroyOnLoad.hasAuthenticate = true;
+        }
+      });
+    }
   }
 
   String _period() {

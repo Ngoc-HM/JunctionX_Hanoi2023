@@ -19,11 +19,11 @@ class _Transfer extends State<Transfer> {
     ),
     Padding(
       padding: EdgeInsets.symmetric(horizontal: 12),
-      child: Text('Chuyển tiền vào STK', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+      child: Text('Chuyển tiền vào STK', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
     ),
     Padding(
       padding: EdgeInsets.symmetric(horizontal: 12),
-      child: Text('Chuyển tiền vào số thẻ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
+      child: Text('Chuyển tiền vào số thẻ', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold), textAlign: TextAlign.center),
     ),
   ];
   List<bool> _isFeatureSelected = [true, false, false];
@@ -101,14 +101,17 @@ class _Inside extends State<Inside> {
               builder: (context, snapshot) => TextField(
                 restorationId: InsideDoNotDestroyOnLoad.inputReceiver,
                 controller: _receiverController,
-                onEditingComplete: () {
+                onChanged: (text) {setState(() {
+                  _receiverInvalid = true;
+                });},
+                onSubmitted: (text) {
                   setState(() {
                     String? receiver = bloc.isValidInfo(_receiverController.text);
                     _receiverInvalid = (receiver == "" || receiver == Null);
                     _receiverName = receiver;
                     InsideDoNotDestroyOnLoad.inputReceiver = _receiverController.text;
                     if(_receiverInvalid) {
-                      showDialog(context: context,
+                      if (_receiverController.text != "") showDialog(context: context,
                           builder: (BuildContext
                                context) => AlertDialog(
                           title: Text("Lỗi"),
@@ -121,6 +124,7 @@ class _Inside extends State<Inside> {
                           ],
                         ));
                   _receiverInvalid = true;}
+
                   });
                 },
                 style: TextStyle(fontSize: 18, color: Colors.black),
@@ -135,7 +139,7 @@ class _Inside extends State<Inside> {
             )),
         Padding(
           padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
-          child: Text("$_receiverName", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),),
+          child: Text("${(_receiverInvalid) ? "" :_receiverName}", style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),),),
         Center(
             child: ElevatedButton(
             onPressed: !_receiverInvalid?( () {
