@@ -7,15 +7,12 @@ import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:local_auth/error_codes.dart' as auth_error;
 
+import '../../dont_destroy_on_load.dart';
+
 enum _SupportState {
   unknown,
   supported,
   unsupported,
-}
-
-class HomeDoNotDestroyOnLoad {
-  static bool canSee = false;
-  static bool hasAuthenticate = false;
 }
 
 class Credit extends StatefulWidget {

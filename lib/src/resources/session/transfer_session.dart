@@ -1,4 +1,6 @@
 import 'package:fintechdemo/src/blocs/inside_transfer_bloc.dart';
+import 'package:fintechdemo/src/blocs/user_information.dart';
+import 'package:fintechdemo/src/dont_destroy_on_load.dart';
 import 'package:flutter/material.dart';
 import 'transfer_page.dart';
 
@@ -58,7 +60,7 @@ class _Transfer extends State<Transfer> {
 
 Route _createRoute() {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => TransferPage(),
+    pageBuilder: (context, animation, secondaryAnimation) => TransferPage(senderID: testUser.accountName, receiverID: TransferDontDestroyOnLoad.receiverID, money: 0),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(0.0, 1.0);
       const end = Offset.zero;
@@ -143,6 +145,7 @@ class _Inside extends State<Inside> {
         Center(
             child: ElevatedButton(
             onPressed: !_receiverInvalid?( () {
+              TransferDontDestroyOnLoad.receiverID = _receiverController.text;
               Navigator.push(context,_createRoute());
             }): null,
             child: Padding(
