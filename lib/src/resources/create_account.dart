@@ -39,7 +39,7 @@ class _CreateAccountState extends State<CreateAccount> {
   bool showPass = true;
   @override
   Widget build(BuildContext context) {
-    final ref = referenceDatase.reference();
+    final ref = referenceDatase.ref();
     return MaterialApp(
       title: 'Đăng Kí Thành Viên Mới',
       home: Scaffold(

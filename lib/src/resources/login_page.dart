@@ -1,5 +1,7 @@
+import 'package:fintechdemo/src/blocs/database_process.dart';
 import 'package:fintechdemo/src/blocs/login_bloc.dart';
 import 'package:flutter/material.dart';
+import '../blocs/user_information.dart';
 import './home_page.dart';
 import './reset_pass.dart';
 import './create_account.dart';
@@ -33,6 +35,7 @@ Route _createRoute() {
 class _LoginPage extends State<LoginPage> {
   // new bloc
   LoginBloc bloc = new LoginBloc();
+  DatabaseProcess db = DatabaseProcess();
   // tạo biến lấy text để xử lí data
   TextEditingController _usernameController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
@@ -147,6 +150,8 @@ class _LoginPage extends State<LoginPage> {
                   onPressed: () {
                     if (bloc.isValidInfo(
                         _usernameController.text, _passwordController.text)) {
+                      db.signIn(context, _usernameController.text, _passwordController.text).then((value) => USER_ID = value!);
+                      remainUser.Update();
                       Navigator.pushReplacementNamed(context, "/");
                     }
                   },

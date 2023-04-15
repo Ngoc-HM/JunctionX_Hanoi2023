@@ -1,3 +1,4 @@
+import 'package:fintechdemo/src/blocs/database_process.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:fintechdemo/src/blocs/user_information.dart';
@@ -22,12 +23,12 @@ class Credit extends StatefulWidget {
 }
 
 class _Credit extends State<Credit> {
+  User _user = remainUser.user;
   //Authentication stuff
   final LocalAuthentication auth = LocalAuthentication();
   _SupportState _supportState = _SupportState.unknown;
   bool didAuthenticate = false;
   // Data
-  User _user = testUser;
   bool _canSee = HomeDoNotDestroyOnLoad.canSee;
 
   @override
