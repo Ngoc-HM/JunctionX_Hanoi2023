@@ -1,11 +1,15 @@
 import 'dart:async';
+import 'package:fintechdemo/src/resources/dialog/msg_dialog.dart';
 import 'package:fintechdemo/src/resources/registration_status.dart';
 import 'package:flutter/material.dart';
+import 'dialog/loading_dialog.dart';
 import 'login_page.dart';
 import '../blocs/RegisterAccount.dart';
 import '../blocs/fire_base/fire_base_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import '../resources/registration_status.dart';
+import '../resources/dialog/msg_dialog.dart';
 
 class CreateAccount extends StatefulWidget {
   @override
@@ -39,7 +43,7 @@ class _CreateAccountState extends State<CreateAccount> {
   bool showPass = true;
   @override
   Widget build(BuildContext context) {
-    final ref = referenceDatase.reference();
+    final ref = referenceDatase.ref();
     return MaterialApp(
       title: 'Đăng Kí Thành Viên Mới',
       home: Scaffold(
@@ -252,39 +256,31 @@ class _CreateAccountState extends State<CreateAccount> {
                             //flex: 2,
                             child: ElevatedButton(
                               onPressed: () {
-                                ref.child("user").push().set({
-                                  "name": _nameController.text,
-                                  "HoTen": _HoTenController.text,
-                                  "email": _emailController.text,
-                                  "phone": _phoneController.text,
-                                  "password": _passwordController.text,
-                                  "password2": _password2Controller.text,
-                                  "money": 10000000,
-                                }).asStream();
-
-                                // authBloc.isValidAcc(
-                                //   _nameController.text,
-                                //   _HoTenController.text,
-                                //   _emailController.text,
-                                //   _phoneController.text,
-                                //   _passwordController.text,
-                                //   _confirmPasswordController.text,
-                                //   _password2Controller.text,
-                                // );
-
-                                // authBloc.signUp(
-                                //     _nameController.text,
-                                //     _HoTenController.text,
-                                //     _emailController.text,
-                                //     _phoneController.text,
-                                //     _passwordController.text,
-                                //     _password2Controller.text,
-                                //     10000000, () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            CreateNewAccountSuccessfully()));
+                                if (authBloc.isValidAcc(
+                                  _nameController.text,
+                                  _HoTenController.text,
+                                  _emailController.text,
+                                  _phoneController.text,
+                                  _passwordController.text,
+                                  _confirmPasswordController.text,
+                                  _password2Controller.text,
+                                )) {
+                                  authBloc.signUp(
+                                      _nameController.text,
+                                      _HoTenController.text,
+                                      _emailController.text,
+                                      _phoneController.text,
+                                      _passwordController.text,
+                                      _password2Controller.text,
+                                      10000000, () {
+                                    MsgDialogtrue.showMsgDialog(context,
+                                        'Sign-in', 'Đăng kí thành công');
+                                  }, (msg) {
+                                    // show msg dialog
+                                    MsgDialog.showMsgDialog(context, 'Sign-in',
+                                        'Tài khoản đã tồn tại');
+                                  });
+                                }
                               },
                               child: Text(
                                 "Đăng kí",

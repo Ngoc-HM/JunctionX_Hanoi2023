@@ -62,12 +62,19 @@ class AuthBloc {
     _password2Controller.sink.add("");
     return true;
   }
-  void signUp(String name, String HoTen, String email, String phone,
-      String pass, String pass2 ,int sodu, Function onSuccess) {
 
-    _firebaseAuth.signUp(name, HoTen, email, phone, pass, pass2 ,1000000, onSuccess);
-
-
+  void signUp(
+      String name,
+      String HoTen,
+      String email,
+      String phone,
+      String pass,
+      String pass2,
+      int sodu,
+      Function onSuccess,
+      onRegisterError) {
+    _firebaseAuth.signUp(name, HoTen, email, phone, pass, pass2, 1000000,
+        onSuccess, onRegisterError);
   }
 
   void dispose() {
