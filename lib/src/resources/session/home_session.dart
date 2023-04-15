@@ -23,7 +23,6 @@ class Credit extends StatefulWidget {
 }
 
 class _Credit extends State<Credit> {
-  User _user = remainUser.user;
   //Authentication stuff
   final LocalAuthentication auth = LocalAuthentication();
   _SupportState _supportState = _SupportState.unknown;
@@ -108,14 +107,14 @@ class _Credit extends State<Credit> {
           Expanded(
             flex: 4,
             child: Text(
-              _user.name,
+              remainUser[remainUser.keys.first]!['HoTen'],
               style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 35),
             ),
           ),
         Expanded(
           flex: 2,
           child: Text(
-            "SĐT/Email đăng kí: ${_user.accountName}",
+            "SĐT/Email đăng kí: ${remainUser[remainUser.keys.first]!['name']}",
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 17),
           ),
         ),
@@ -125,7 +124,7 @@ class _Credit extends State<Credit> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    _canSee ? NumberFormat("\$#,##0").format(_user.money) : "*" * max(_user.money.toString().length, 6),
+                    _canSee ? NumberFormat("\$#,##0").format(remainUser[remainUser.keys.first]!['money']) : "*" * max(remainUser[remainUser.keys.first]!['money'].toString().length, 6),
                     style: TextStyle(color: Colors.black, fontWeight: FontWeight.w200, fontSize: 30),
                   ),
                   IconButton(

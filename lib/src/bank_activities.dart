@@ -16,7 +16,7 @@ class SendInMoney {
       children: [
         Row(children: [Text(time.toString())],),
         Row( children: [ Text("Sender: $senderID"), Text("Receiver: $receiverID") ] ),
-        Row( children: [ Text("Amount: ${(USER_ID == senderID)?'-':'+'}$amount"), Text("Content: $content") ] ),
+        Row( children: [ Text("Amount: ${(remainUser.keys.first == senderID)?'-':'+'}$amount"), Text("Content: $content") ] ),
       ],
     );
   }

@@ -1,4 +1,5 @@
 import 'package:fintechdemo/src/blocs/database_process.dart';
+import '../resources/login_page.dart';
 
 class User {
   String _name = "";
@@ -36,19 +37,11 @@ class User {
 class RemainUser {
   User user = User();
   late String USER_ID;
-  static DatabaseProcess db = DatabaseProcess();
   RemainUser(String user_id) {
     USER_ID = user_id;
-
   }
 
-  Future<void> Update() async {
-    var userMap = await db.getDataFromDatabase(USER_ID);
-    user.name = userMap['HoTen']!; //full name
-    user.money = int.parse(userMap['money']!); //balance
-    user.accountName = userMap['name']!; //account name
-  }
 }
 
-String USER_ID = "";
-RemainUser remainUser = RemainUser(USER_ID);
+late Map<dynamic, Map<dynamic, dynamic>> remainUser;
+

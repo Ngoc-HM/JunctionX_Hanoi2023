@@ -13,6 +13,9 @@ class LoginPage extends StatefulWidget {
 
 bool showPass = true;
 
+var username = "";
+var password = "";
+
 Route _createRoute() {
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) =>
@@ -43,6 +46,16 @@ class _LoginPage extends State<LoginPage> {
   bool _usernameInvalid = false;
   bool _passwordInvalid = false;
   var _passwordError = "Mật khẩu phải trên 6 kí tự";
+
+  void checkAccount() async {
+    bool test = await bloc.isValidInfo(_usernameController.text, _passwordController.text);
+    remainUser = await db.getUserInfo('name', _usernameController.text);
+
+    if (test && remainUser != RemainUser("")) {
+      Navigator.pushReplacementNamed(context, "/");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,14 +160,7 @@ class _LoginPage extends State<LoginPage> {
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: () {
-                    if (bloc.isValidInfo(
-                        _usernameController.text, _passwordController.text)) {
-                      db.signIn(context, _usernameController.text, _passwordController.text).then((value) => USER_ID = value!);
-                      remainUser.Update();
-                      Navigator.pushReplacementNamed(context, "/");
-                    }
-                  },
+                  onPressed: () { checkAccount(); },
                   child: Text(
                     "Đăng nhập",
                     // cho chữ đăng nhập to hơn
@@ -212,5 +218,8 @@ class _LoginPage extends State<LoginPage> {
         ),
       ),
     );
+
   }
+  static String username = _LoginPage()._usernameController.text;
+  static String password = _LoginPage()._passwordController.text;
 }

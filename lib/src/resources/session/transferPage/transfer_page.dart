@@ -94,7 +94,7 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
                   ),
                   Expanded(
                     flex: 10,
-                    child: Text("${remainUser.user.name}\n${NumberFormat("\$#,##0").format(remainUser.user.money)}"),
+                    child: Text("${(remainUser.values as Map<dynamic, dynamic>)['HoTen']}\n${NumberFormat("\$#,##0").format((remainUser.values as Map<dynamic, dynamic>)['name'])}"),
                   )
                 ],
               )
@@ -181,7 +181,7 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
             height: 56,
             child: ElevatedButton(
               onPressed: () { if (bloc.isValidAcc(_sotienController.text, _tinnhanController.text)) {
-                if (remainUser.user.money < int.parse(_sotienController.text)) {
+                if ((remainUser.values as Map<dynamic, dynamic>)['money'] < int.parse(_sotienController.text)) {
                   showDialog(
                       context: context,
                       builder: (context) {
@@ -206,15 +206,15 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
                           stickyAuth: true).then((value) {
                         //SendInMoney last = SendInMoney(senderID: testUser.name, receiverID: receiverID, amount: int.parse(_sotienController.text), content: _tinnhanController.text);
                         if (value) {
-                          db.updateDataInDatabase(USER_ID, 'money', (remainUser.user.money - int.parse(_sotienController.text)).toString());
+                          db.updateDataInDatabase(remainUser.keys.first, 'money', ((remainUser.values as Map<dynamic, dynamic>)['money'] - int.parse(_sotienController.text)).toString());
                           //Lấy thông tin người gửi để cập nhật
                           late String receiverid;
                           db.getChildNameByAttribute('name', receiverID).then((value) {
                             receiverid = value;
                           });
-                          db.updateDataInDatabase(receiverid, 'money', (remainUser.user.money + int.parse(_sotienController.text)).toString());
-                          remainUser.Update();
-                          SendInMoney last = SendInMoney(senderID: remainUser.user.accountName, receiverID: receiverid, amount: int.parse(_sotienController.text), content: _tinnhanController.text, time: DateTime.now());
+                          db.updateDataInDatabase(receiverid, 'money', ((remainUser.values as Map<dynamic, dynamic>)['money'] + int.parse(_sotienController.text)).toString());
+                          (remainUser.values as Map<dynamic, dynamic>)['money'] = (remainUser.values as Map<dynamic, dynamic>)['money'] - int.parse(_sotienController.text);
+                          SendInMoney last = SendInMoney(senderID: (remainUser.values as Map<dynamic, dynamic>)['name'], receiverID: receiverid, amount: int.parse(_sotienController.text), content: _tinnhanController.text, time: DateTime.now());
                           db.addNewRowToDatabase('history', {'senderID': last.senderID, 'receiverID': last.receiverID, 'amount': last.amount.toString(), 'content': last.content, 'time': last.time.toString()});
                           showDialog(
                               context: context,

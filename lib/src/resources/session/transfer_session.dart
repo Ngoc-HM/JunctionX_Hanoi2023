@@ -61,7 +61,7 @@ class _Transfer extends State<Transfer> {
 
 Route _createRoute() {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => TransferPage(senderID: remainUser.user.accountName, receiverID: TransferDontDestroyOnLoad.receiverID, money: 0),
+    pageBuilder: (context, animation, secondaryAnimation) => TransferPage(senderID: remainUser.keys.first, receiverID: TransferDontDestroyOnLoad.receiverID, money: 0),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(0.0, 1.0);
       const end = Offset.zero;

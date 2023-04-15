@@ -1,3 +1,4 @@
+import 'package:fintechdemo/src/blocs/user_information.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -5,68 +6,99 @@ import 'package:flutter/material.dart';
 
 class DatabaseProcess {
   DatabaseProcess();
-  // check login information valid or not
-  Future<String?> signIn(BuildContext context, String email, String password) async {
+  // Kiểm tra user có đăng nhập đúng không
+  Future<bool> checkUser(String username, String password) async {
+    bool res;
     try {
+      res = false;
       DatabaseEvent event = await FirebaseDatabase.instance.ref().child('user').once();
       DataSnapshot dataSnapshot = event.snapshot;
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email,
-          password: password
-      );
-      return userCredential.user!.uid;
-      // Đăng nhập thành công, userCredential.user sẽ chứa thông tin người dùng đã đăng nhập
+      Map<dynamic, dynamic> values = dataSnapshot.value as Map<dynamic, dynamic>;
+
+      values.forEach((key, value) {
+        print("${value['name'].toString()} == ${username} and ${value['password'].toString()} == ${password}");
+        if (value['name'] == username && value['password'] == password) {
+          res = true;
+        }
+      });
+      print(res);
+      return res;
     } on FirebaseAuthException catch (e) {
-      // Xử lý lỗi nếu có
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text("Lỗi"),
-              content: Text(e.message!),
-              actions: [
-                TextButton(
-                  child: Text("OK"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                )
-              ],
-            );
-          }
-      );
-      return null;
+      return false;
     }
   }
+  // check login information valid or not
+  // Future<String> signIn(String email, String password) async {
+  //   try {
+  //     DatabaseEvent event = await FirebaseDatabase.instance.ref().child('user').once();
+  //     DataSnapshot dataSnapshot = event.snapshot;
+  //     UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+  //         email: email,
+  //         password: password
+  //     );
+  //     return userCredential.user!.uid;
+  //     // Đăng nhập thành công, userCredential.user sẽ chứa thông tin người dùng đã đăng nhập
+  //   } on FirebaseAuthException catch (e) {
+  //     // Xử lý lỗi nếu có
+  //    /* showDialog(
+  //         context: context,
+  //         builder: (context) {
+  //           return AlertDialog(
+  //             title: Text("Lỗi"),
+  //             content: Text(e.message!),
+  //             actions: [
+  //               TextButton(
+  //                 child: Text("OK"),
+  //                 onPressed: () {
+  //                   Navigator.of(context).pop();
+  //                 },
+  //               )
+  //             ],
+  //           );
+  //         }
+  //     );*/
+  //     return "";
+  //   }
+  // }
+  // //Lấy id của user
+
 
   // Truy vấn tên child node trong Realtime Database dựa trên 2 thuộc tính
-  Future<String> getChildNameByAttributes(String attribute1, String value1, String attribute2, String value2) async {
+  Future<Map<dynamic, Map<dynamic, dynamic>> > getUserInfo(String attribute1, String value1) async {
     DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
-    String childName = '';
+    RemainUser curr = RemainUser("");
+    bool isFound = false;
 
     try {
       // Sử dụng phương thức orderByChild và equalTo để lọc các child node có giá trị trường dữ liệu của 2 thuộc tính trùng khớp với tham số được cung cấp
-      Query query = databaseReference.child('your_parent_node_name')
-          .orderByChild(attribute1).equalTo(value1)
-          .orderByChild(attribute2).equalTo(value2);
+      Query query = databaseReference.child('user')
+          .orderByChild(attribute1).equalTo(value1);
       DatabaseEvent event = await query.once();
       DataSnapshot dataSnapshot = await event.snapshot;
-      Map<String, Object> list = dataSnapshot.value as Map<String, Object>;
+      Map<dynamic, dynamic> list = dataSnapshot.value as Map<dynamic, dynamic>;
+      print(list.toString());
+      Map<dynamic, Map<dynamic, dynamic>> list2 = {};
+      list.forEach((key, value) {list2[key] = value as Map<dynamic, dynamic>;});
+      return list2;
       // Kiểm tra xem dữ liệu có tồn tại hay không
-      if (dataSnapshot.value != null) {
-        // Lặp qua tất cả các child node tìm được (chỉ lấy child đầu tiên trong danh sách)
-        list.forEach((nodeId, nodeData) {
-          childName = nodeId;
-          return; // Để thoát khỏi vòng lặp sau khi tìm thấy child đầu tiên
-        });
-      } else {
-        print('Không tìm thấy dữ liệu với $attribute1: $value1 và $attribute2: $value2');
-      }
+      // if (list != null) {
+      //   isFound = true;
+      // }
+      // if (isFound == true) {
+      //   print("Boo");
+      //   curr.USER_ID = list.keys.first.toString();
+      //   curr.user.accountName = list[curr.USER_ID]['name'].toString();
+      //   curr.user.name = list[curr.USER_ID]['HoTen'].toString();
+      //   curr.user.money = list[curr.USER_ID]['money'];
+      // } else {
+      //   print('Không tìm thấy dữ liệu với $attribute1: $value1');
+      // }
+      // return Future.value(curr);
     } catch (e) {
       print('Lỗi khi truy vấn dữ liệu: $e');
+      return {};
     }
 
-    return childName;
   }
 
   // Truy vấn tên child node trong Realtime Database dựa trên 1 thuộc tính
@@ -105,11 +137,11 @@ class DatabaseProcess {
       DatabaseEvent event = await databaseReference.child('user').child(nodeId).once();
       DataSnapshot dataSnapshot = event.snapshot;
       // Kiểm tra xem dữ liệu có tồn tại hay không
-      Map<String, Object> list = dataSnapshot.value as Map<String, Object>;
+      Map<dynamic, dynamic> list = dataSnapshot.value as Map<dynamic, dynamic>;
       if (dataSnapshot.value != null) {
         // Lấy giá trị của dữ liệu từ DataSnapshot
         for (var key in data.keys) {
-          data[key] = list[key] as String;
+          data[key] = list[key].toString();
         }
         return data;
       } else {
