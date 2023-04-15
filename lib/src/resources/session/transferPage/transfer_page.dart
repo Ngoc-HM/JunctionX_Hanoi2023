@@ -1,12 +1,15 @@
-import 'package:fintechdemo/src/blocs/transfer_bloc.dart';
 import 'package:fintechdemo/src/blocs/user_information.dart';
 import 'package:fintechdemo/src/dont_destroy_on_load.dart';
+import 'package:fintechdemo/src/resources/session/history_session.dart';
 import 'package:fintechdemo/src/validators/validations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:intl/intl.dart';
 import 'package:fintechdemo/src/blocs/transferPage_bloc.dart';
+import 'package:local_auth/local_auth.dart';
+
+import '../../../bank_activities.dart';
 
 class TransferPage extends StatelessWidget {
 
@@ -49,6 +52,7 @@ class TransferInfoScreen extends StatefulWidget {
 
 class _TransferInfoScreen extends State<TransferInfoScreen> {
   AuthBloc bloc = new AuthBloc();
+  LocalAuthentication auth = LocalAuthentication();
 
   TextEditingController _sotienController = new TextEditingController();
   TextEditingController _tinnhanController = new TextEditingController();
@@ -135,12 +139,12 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
                 ],
                 controller: _sotienController,
                 style: TextStyle(fontSize: 18, color: Colors.black),
+                onSubmitted: (value) {},
                 decoration: InputDecoration(
                     labelText: "Nhập số tiền cần chuyển",
                     errorText: snapshot.hasError
                         ? snapshot.error.toString()
                         : null,
-
                     border: OutlineInputBorder(
                       borderSide:
                       BorderSide(color: Color(0xffCED0D2), width: 1),
@@ -153,7 +157,6 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
             child: StreamBuilder(
               stream: bloc.tinnhanStream,
               builder: (context, snapshot) => TextField(
-
                 controller: _tinnhanController,
                 style: TextStyle(fontSize: 18, color: Colors.black),
                 decoration: InputDecoration(
@@ -175,10 +178,89 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
             width: double.infinity,
             height: 56,
             child: ElevatedButton(
-              onPressed: () {
-    if(bloc.isValidAcc(_sotienController.text, _tinnhanController.text)){
-    }
-    },
+              onPressed: () { if (bloc.isValidAcc(_sotienController.text, _tinnhanController.text)) {
+                if (testUser.money < int.parse(_sotienController.text)) {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text("Thông báo"),
+                          content: Text("Số tiền trong tài khoản không đủ"),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text("OK"))
+                          ],
+                        );
+                      });}
+                else {
+                  auth.isDeviceSupported().then((isSupported) {
+                    if (isSupported) {
+                      auth.authenticate(
+                          localizedReason: "Xác thực để chuyển tiền",
+                          biometricOnly: true,
+                          stickyAuth: true).then((value) {
+                        //SendInMoney last = SendInMoney(senderID: testUser.name, receiverID: receiverID, amount: int.parse(_sotienController.text), content: _tinnhanController.text);
+                        if (value) {
+                          //last.Sent(last.amount);
+                          //history.add(last);
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text("Thông báo"),
+                                  content: Text("Chuyển tiền thành công"),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text("OK"))
+                                  ],
+                                );
+                              });
+                        }
+                        else {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text("Thông báo"),
+                                  content: Text("Chuyển tiền thất bại"),
+                                  actions: [
+                                    TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text("OK"))
+                                  ],
+                                );
+                              });
+                        }
+                      });
+                    }
+                  });
+                   /* SendInMoney last = SendInMoney(senderID: testUser.name, receiverID: receiverID, amount: int.parse(_sotienController.text), content: _tinnhanController.text);
+                  last.Sent(last.amount); */
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text("Thông báo"),
+                          content: Text("Không có phương thức xác thực"),
+                          actions: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text("OK"))
+                          ],
+                        );
+                      });
+                }
+              }},
               child: Text(
                 "Chuyển tiền",
                 // cho chữ đăng nhập to hơn
