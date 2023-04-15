@@ -2,6 +2,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
+final databaseReference = FirebaseDatabase.instance.reference();
+
 class FireAuth {
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
