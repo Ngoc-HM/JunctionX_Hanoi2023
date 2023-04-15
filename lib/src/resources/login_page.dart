@@ -50,8 +50,10 @@ class _LoginPage extends State<LoginPage> {
   void checkAccount() async {
     bool test = await bloc.isValidInfo(_usernameController.text, _passwordController.text);
     remainUser = await db.getUserInfo('name', _usernameController.text);
+    allUser = await db.getAllUserInfo();
 
     if (test && remainUser != RemainUser("")) {
+      print(allUser.toString());
       Navigator.pushReplacementNamed(context, "/");
     }
   }

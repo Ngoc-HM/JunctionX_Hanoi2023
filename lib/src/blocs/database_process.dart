@@ -101,6 +101,42 @@ class DatabaseProcess {
 
   }
 
+  Future<Map<dynamic, Map<dynamic, dynamic>> > getAllUserInfo() async {
+    DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
+    RemainUser curr = RemainUser("");
+    bool isFound = false;
+
+    try {
+      // Sử dụng phương thức orderByChild và equalTo để lọc các child node có giá trị trường dữ liệu của 2 thuộc tính trùng khớp với tham số được cung cấp
+      Query query = databaseReference.child('user');
+      DatabaseEvent event = await query.once();
+      DataSnapshot dataSnapshot = await event.snapshot;
+      Map<dynamic, dynamic> list = dataSnapshot.value as Map<dynamic, dynamic>;
+      print(list.toString());
+      Map<dynamic, Map<dynamic, dynamic>> list2 = {};
+      list.forEach((key, value) {list2[key] = value as Map<dynamic, dynamic>;});
+      return list2;
+      // Kiểm tra xem dữ liệu có tồn tại hay không
+      // if (list != null) {
+      //   isFound = true;
+      // }
+      // if (isFound == true) {
+      //   print("Boo");
+      //   curr.USER_ID = list.keys.first.toString();
+      //   curr.user.accountName = list[curr.USER_ID]['name'].toString();
+      //   curr.user.name = list[curr.USER_ID]['HoTen'].toString();
+      //   curr.user.money = list[curr.USER_ID]['money'];
+      // } else {
+      //   print('Không tìm thấy dữ liệu với $attribute1: $value1');
+      // }
+      // return Future.value(curr);
+    } catch (e) {
+      print('Lỗi khi truy vấn dữ liệu: $e');
+      return {};
+    }
+
+  }
+
   // Truy vấn tên child node trong Realtime Database dựa trên 1 thuộc tính
   Future<String> getChildNameByAttribute(String attribute, String value) async {
     DatabaseReference databaseReference = FirebaseDatabase.instance.ref();

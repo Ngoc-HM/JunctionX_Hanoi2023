@@ -44,4 +44,5 @@ class RemainUser {
 }
 
 late Map<dynamic, Map<dynamic, dynamic>> remainUser;
+late Map<dynamic, Map<dynamic, dynamic>> allUser;
 
