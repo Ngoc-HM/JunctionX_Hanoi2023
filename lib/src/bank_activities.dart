@@ -7,19 +7,18 @@ class SendInMoney {
   late String receiverID;
   late int amount;
   late String? content;
+  late DateTime time;
 
-  SendInMoney({Key? key, required this.senderID, required this.receiverID, required this.amount, required this.content});
+  SendInMoney({Key? key, required this.senderID, required this.receiverID, required this.amount, required this.content, required this.time});
 
   Widget Infomation() {
     return Column(
       children: [
+        Row(children: [Text(time.toString())],),
         Row( children: [ Text("Sender: $senderID"), Text("Receiver: $receiverID") ] ),
-        Row( children: [ Text("Amount: $amount"), Text("Content: $content") ] ),
+        Row( children: [ Text("Amount: ${(USER_ID == senderID)?'-':'+'}$amount"), Text("Content: $content") ] ),
       ],
     );
   }
 
-  void Sent(int amount) {
-    testUser.money -= amount;
-  }
 }

@@ -1,9 +1,6 @@
-class Validations {
-  static final Map<String, String> validReceiver = {
-    "0123456789": "VU THI HANG",
-    "0982934052": "HOANG NGOC MINH"
-  };
+import 'package:fintechdemo/src/blocs/database_process.dart';
 
+class Validations {
   static bool isValidUser(String user) {
     return user != null && user.length >= 6;
   }
@@ -13,6 +10,9 @@ class Validations {
   }
 
   static bool isValidReceiver(String receiver) {
-    return validReceiver.keys.contains(receiver);
+    DatabaseProcess db = DatabaseProcess();
+    bool res = false;
+    db.checkReceiverName(receiver).then((value) => res = value);
+    return res;
   }
 }

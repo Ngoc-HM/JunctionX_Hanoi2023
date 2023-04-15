@@ -10,6 +10,7 @@ import 'package:fintechdemo/src/blocs/transferPage_bloc.dart';
 import 'package:local_auth/local_auth.dart';
 
 import '../../../bank_activities.dart';
+import '../../../blocs/database_process.dart';
 
 class TransferPage extends StatelessWidget {
 
@@ -51,6 +52,7 @@ class TransferInfoScreen extends StatefulWidget {
 }
 
 class _TransferInfoScreen extends State<TransferInfoScreen> {
+  DatabaseProcess db = DatabaseProcess();
   AuthBloc bloc = new AuthBloc();
   LocalAuthentication auth = LocalAuthentication();
 
@@ -61,13 +63,13 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
   bool _tinnhanVal = false;
 
   String senderID = "";
-  String receiverID = "";
+  String receiverID = TransferDontDestroyOnLoad.receiverID;
   int money = 0;
 
   _TransferInfoScreen({Key? key, required this.senderID, required this.receiverID, required this.money});
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return SafeArea(child: Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -92,7 +94,7 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
                   ),
                   Expanded(
                     flex: 10,
-                    child: Text("${testUser.name}\n${NumberFormat("\$#,##0").format(testUser.money)}"),
+                    child: Text("${remainUser.user.name}\n${NumberFormat("\$#,##0").format(remainUser.user.money)}"),
                   )
                 ],
               )
@@ -114,7 +116,7 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
                 children: [
                   Expanded(
                     flex: 10,
-                    child: Text("${Validations.validReceiver[receiverID]}\n${receiverID}", textAlign: TextAlign.end,),
+                    child: AujustText(receiverID),
                   ),
                   Expanded(
                     flex: 2,
@@ -179,7 +181,7 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
             height: 56,
             child: ElevatedButton(
               onPressed: () { if (bloc.isValidAcc(_sotienController.text, _tinnhanController.text)) {
-                if (testUser.money < int.parse(_sotienController.text)) {
+                if (remainUser.user.money < int.parse(_sotienController.text)) {
                   showDialog(
                       context: context,
                       builder: (context) {
@@ -204,14 +206,22 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
                           stickyAuth: true).then((value) {
                         //SendInMoney last = SendInMoney(senderID: testUser.name, receiverID: receiverID, amount: int.parse(_sotienController.text), content: _tinnhanController.text);
                         if (value) {
-                          //last.Sent(last.amount);
-                          //history.add(last);
+                          db.updateDataInDatabase(USER_ID, 'money', (remainUser.user.money - int.parse(_sotienController.text)).toString());
+                          //Lấy thông tin người gửi để cập nhật
+                          late String receiverid;
+                          db.getChildNameByAttribute('name', receiverID).then((value) {
+                            receiverid = value;
+                          });
+                          db.updateDataInDatabase(receiverid, 'money', (remainUser.user.money + int.parse(_sotienController.text)).toString());
+                          remainUser.Update();
+                          SendInMoney last = SendInMoney(senderID: remainUser.user.accountName, receiverID: receiverid, amount: int.parse(_sotienController.text), content: _tinnhanController.text, time: DateTime.now());
+                          db.addNewRowToDatabase('history', {'senderID': last.senderID, 'receiverID': last.receiverID, 'amount': last.amount.toString(), 'content': last.content, 'time': last.time.toString()});
                           showDialog(
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
                                   title: Text("Thông báo"),
-                                  content: Text("Chuyển tiền thành công"),
+                                  content: Text("Chuyển tiền thành công.\nSố tài khoản nhận: ${receiverID}.\nSố tiền: ${_sotienController.text}.\nNội dung: ${_tinnhanController.text}"),
                                   actions: [
                                     TextButton(
                                         onPressed: () {
@@ -241,26 +251,27 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
                         }
                       });
                     }
-                  });
-                   /* SendInMoney last = SendInMoney(senderID: testUser.name, receiverID: receiverID, amount: int.parse(_sotienController.text), content: _tinnhanController.text);
+                    else showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text("Thông báo"),
+                            content: Text("Không có phương thức xác thực"),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("OK"))
+                            ],
+                          );
+                        });
+                  }
+                  );
+                  /* SendInMoney last = SendInMoney(senderID: testUser.name, receiverID: receiverID, amount: int.parse(_sotienController.text), content: _tinnhanController.text);
                   last.Sent(last.amount); */
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: Text("Thông báo"),
-                          content: Text("Không có phương thức xác thực"),
-                          actions: [
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text("OK"))
-                          ],
-                        );
-                      });
-                }
-              }},
+
+                }}},
               child: Text(
                 "Chuyển tiền",
                 // cho chữ đăng nhập to hơn
@@ -272,6 +283,29 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
 
         //Money
       ],
-    );
+    ));
+
+  }
+}
+
+class AujustText extends StatelessWidget {
+  final String text;
+  AujustText(this.text, {Key? key}) : super(key: key);
+
+  DatabaseProcess db = DatabaseProcess();
+  User user = User();
+
+  String content() {
+    late String receiverID;
+    db.getChildNameByAttribute('name', text).then((value) {
+      receiverID = value;
+    });
+    RemainUser receiverUser = RemainUser(receiverID);
+    return "${receiverUser.user.name}\n${receiverUser.user.accountName}";
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(content(), textAlign: TextAlign.center,);
   }
 }
