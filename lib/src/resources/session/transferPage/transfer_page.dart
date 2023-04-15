@@ -67,7 +67,7 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
   _TransferInfoScreen({Key? key, required this.senderID, required this.receiverID, required this.money});
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return SafeArea(child: Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -204,16 +204,15 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
                           stickyAuth: true).then((value) {
                         //SendInMoney last = SendInMoney(senderID: testUser.name, receiverID: receiverID, amount: int.parse(_sotienController.text), content: _tinnhanController.text);
                         if (value) {
-                          //last.Sent(last.amount);
-                          //history.add(last);
                           showDialog(
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
                                   title: Text("Thông báo"),
-                                  content: Text("Chuyển tiền thành công"),
+                                  content: Text("Chuyển tiền thành công.\nSố tài khoản nhận: ${receiverID}.\nSố tiền: ${_sotienController.text}.\nNội dung: ${_tinnhanController.text}"),
                                   actions: [
                                     TextButton(
+
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
@@ -241,26 +240,27 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
                         }
                       });
                     }
-                  });
-                   /* SendInMoney last = SendInMoney(senderID: testUser.name, receiverID: receiverID, amount: int.parse(_sotienController.text), content: _tinnhanController.text);
+                    else showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Text("Thông báo"),
+                            content: Text("Không có phương thức xác thực"),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("OK"))
+                            ],
+                          );
+                        });
+                  }
+                  );
+                  /* SendInMoney last = SendInMoney(senderID: testUser.name, receiverID: receiverID, amount: int.parse(_sotienController.text), content: _tinnhanController.text);
                   last.Sent(last.amount); */
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: Text("Thông báo"),
-                          content: Text("Không có phương thức xác thực"),
-                          actions: [
-                            TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text("OK"))
-                          ],
-                        );
-                      });
-                }
-              }},
+
+                }}},
               child: Text(
                 "Chuyển tiền",
                 // cho chữ đăng nhập to hơn
@@ -272,6 +272,7 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
 
         //Money
       ],
-    );
+    ));
+
   }
 }
