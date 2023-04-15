@@ -13,7 +13,8 @@ bool showPass = true;
 
 Route _createRoute() {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => HomePage(pageIndex: 0),
+    pageBuilder: (context, animation, secondaryAnimation) =>
+        HomePage(pageIndex: 0),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(0.0, 1.0);
       const end = Offset.zero;
@@ -55,11 +56,7 @@ class _LoginPage extends State<LoginPage> {
           children: <Widget>[
             // hình ảnh Flutter
             Padding(
-<<<<<<< HEAD
-              padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
-=======
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
->>>>>>> c37304ab69a279bb65c446b9879a8af61d72bfca
               child: Container(
                 //child: FlutterLogo(),
                 child: Image.asset(
