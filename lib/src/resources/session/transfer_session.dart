@@ -74,9 +74,10 @@ class _Transfer extends State<Transfer> {
 }
 
 Route _createRoute() {
+  print("${remainUser.keys.first}, ${TransferDontDestroyOnLoad.receiverID}, 0");
   return PageRouteBuilder(
     pageBuilder: (context, animation, secondaryAnimation) => TransferPage(
-        senderID: remainUser.keys.first,
+        senderID: remainUser.keys.first as String,
         receiverID: TransferDontDestroyOnLoad.receiverID,
         money: 0),
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
@@ -106,13 +107,12 @@ class InsideDoNotDestroyOnLoad {
 
 class _Inside extends State<Inside> {
   InsideReceiverBloc bloc = new InsideReceiverBloc();
-  DatabaseProcess db = DatabaseProcess();
   String usernhantien = "";
   String? _receiverName = "";
   //InsideReceiverBloc bloc = InsideReceiverBloc();
   TextEditingController _receiverController = new TextEditingController();
   var _receiverError = "Tài khoản không hợp lệ";
-  bool _receiverInvalid = true;
+  bool _receiverValid = true;
   @override
   Widget build(BuildContext context) {
     return Wrap(
@@ -126,16 +126,12 @@ class _Inside extends State<Inside> {
                 controller: _receiverController,
                 onChanged: (text) {
                   setState(() {
-                    _receiverInvalid = true;
+                    _receiverValid = false;
                   });
                 },
                 onSubmitted: (text) {
                   setState(() {
-                    // String? receiver =
-                    //     bloc.isValidInfo(_receiverController.text);
-                    // _receiverInvalid = (receiver == "" || receiver == Null);
-                    // _receiverName = receiver;
-                    _receiverInvalid = false;
+                    _receiverValid = false;
                     InsideDoNotDestroyOnLoad.inputReceiver =
                         _receiverController.text;
                     for (var i = 0; i < allUser.length; i++) {
@@ -145,10 +141,11 @@ class _Inside extends State<Inside> {
                         print(allUser[allUser.keys.elementAt(i)]!['HoTen']);
                         usernhantien =
                             allUser[allUser.keys.elementAt(i)]!['HoTen'];
-                        _receiverInvalid = true;
+                        _receiverValid = true;
+                        TransferDontDestroyOnLoad.receiverID = allUser.keys.elementAt(i) as String;
                       }
                     }
-                    if (_receiverInvalid == false) {
+                    if (_receiverValid == false) {
                       if (_receiverController.text != "" ||
                           _receiverController.text == null)
                         showDialog(
@@ -190,16 +187,14 @@ class _Inside extends State<Inside> {
         Padding(
           padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
           child: Text(
-            "${(!_receiverInvalid) ? "" : _receiverName}",
+            "${(!_receiverValid) ? "" : _receiverName}",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
           ),
         ),
         Center(
             child: ElevatedButton(
-                onPressed: _receiverInvalid
+                onPressed: _receiverValid
                     ? (() {
-                        TransferDontDestroyOnLoad.receiverID =
-                            _receiverController.text;
                         Navigator.push(context, _createRoute());
                       })
                     : null,
