@@ -1,5 +1,6 @@
 import 'package:fintechdemo/src/blocs/user_information.dart';
 import 'package:fintechdemo/src/dont_destroy_on_load.dart';
+import 'package:fintechdemo/src/resources/login_page.dart';
 import 'package:fintechdemo/src/resources/session/history_session.dart';
 import 'package:fintechdemo/src/validators/validations.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,10 @@ import 'package:fintechdemo/src/blocs/transferPage_bloc.dart';
 import 'package:local_auth/local_auth.dart';
 import '../../../bank_activities.dart';
 import '../../../blocs/database_process.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
+
+final databaseRef = FirebaseDatabase.instance.ref();
 
 class TransferPage extends StatelessWidget {
   String senderID = "";
@@ -68,7 +73,7 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
   DatabaseProcess db = DatabaseProcess();
   AuthBloc bloc = new AuthBloc();
   LocalAuthentication auth = LocalAuthentication();
-
+  LoginPage datachuyen = new LoginPage();
   TextEditingController _sotienController = new TextEditingController();
   TextEditingController _tinnhanController = new TextEditingController();
 
@@ -143,7 +148,9 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
                 children: [
                   Expanded(
                     flex: 10,
-                    child: Text("${allUser[receiverID]!['HoTen']}\n${allUser[receiverID]!['name']}", textAlign: TextAlign.end),
+                    child: Text(
+                        "${allUser[receiverID]!['HoTen']}\n${allUser[receiverID]!['name']}",
+                        textAlign: TextAlign.end),
                   ),
                   Expanded(
                     flex: 2,
@@ -206,6 +213,14 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
             width: double.infinity,
             height: 56,
             child: ElevatedButton(
+              //  đổi nút sang màu xanh
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xff00B140),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+
               onPressed: () {
                 if (bloc.isValidAcc(
                     _sotienController.text, _tinnhanController.text)) {
@@ -235,25 +250,13 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
                                 biometricOnly: true,
                                 stickyAuth: true)
                             .then((value) {
-                          //SendInMoney last = SendInMoney(senderID: testUser.name, receiverID: receiverID, amount: int.parse(_sotienController.text), content: _tinnhanController.text);
                           if (value) {
-                            // db.updateDataInDatabase(
-                            //     remainUser.keys.first,
-                            //     'money',
-                            //     (remainUser.values.first['money'] -
-                            //             int.parse(_sotienController.text))
-                            //         .toString());
-                            // //Lấy thông tin người gửi để cập nhật
-                            // db.updateDataInDatabase(
-                            //     receiverID,
-                            //     'money',
-                            //     (allUser[receiverID]!['money'] +
-                            //             int.parse(_sotienController.text))
-                            //         .toString());
-                            remainUser.values.first['money'] = remainUser.values.first['money'] -
-                                int.parse(_sotienController.text);
-                            allUser[receiverID]!['money'] = allUser[receiverID]!['money'] +
-                                int.parse(_sotienController.text);
+                            remainUser.values.first['money'] =
+                                remainUser.values.first['money'] -
+                                    int.parse(_sotienController.text);
+                            allUser[receiverID]!['money'] =
+                                allUser[receiverID]!['money'] +
+                                    int.parse(_sotienController.text);
                             db.addNewRowToDatabase('history', {
                               'senderID': senderID,
                               'receiverID': receiverID,
@@ -312,9 +315,6 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
                               );
                             });
                     });
-                    /* SendInMoney last = SendInMoney(senderID: testUser.name, receiverID: receiverID, amount: int.parse(_sotienController.text), content: _tinnhanController.text);
-                  last.Sent(last.amount); */
-
                   }
                 }
               },

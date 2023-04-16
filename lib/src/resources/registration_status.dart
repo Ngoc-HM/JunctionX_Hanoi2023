@@ -10,6 +10,7 @@ class CreateNewAccountSuccessfully extends StatelessWidget {
       title: 'Đăng kí thành viên mới thành công',
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.red,
           title: Text('Đăng kí thành viên mới thành công'),
         ),
         body: Container(
@@ -65,6 +66,13 @@ class CreateNewAccountSuccessfully extends StatelessWidget {
                           Flexible(
                             //flex: 3,
                             child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.red,
+                                onPrimary: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                              ),
                               onPressed: () {
                                 Navigator.pushReplacement(
                                     context,

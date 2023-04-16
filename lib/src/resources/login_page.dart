@@ -1,5 +1,6 @@
 import 'package:fintechdemo/src/blocs/database_process.dart';
 import 'package:fintechdemo/src/blocs/login_bloc.dart';
+import 'package:fintechdemo/src/resources/registration_status.dart';
 import 'package:flutter/material.dart';
 import '../blocs/user_information.dart';
 import './home_page.dart';
@@ -89,7 +90,7 @@ class _LoginPage extends State<LoginPage> {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 30),
               child: Text(
-                " 😁 Xin chào Fintech\nJunctionX Hanoi 2023",
+                "    Welcome Fintech\nJunctionX Hanoi 2023",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.black,

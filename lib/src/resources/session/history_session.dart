@@ -25,11 +25,11 @@ class _History extends State<History> {
     //         content: value[i]['content']!,
     //         time: DateTime.parse(value[i]['time']!))
     // );});
+
     return SingleChildScrollView(
       child: Column(
         children: [
-          for (var i = 0; i < history.length; i++)
-            history[i].Infomation(),
+          for (var i = 0; i < history.length; i++) history[i].Infomation(),
         ],
       ),
     );

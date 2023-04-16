@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../login_page.dart';
+import '../registration_status.dart';
 
 class MsgDialog {
   static void showMsgDialog(BuildContext context, String title, String msg) {
@@ -13,7 +14,8 @@ class MsgDialog {
                 TextButton(
                   child: Text("OK"),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()));
                   },
                 )
               ],
@@ -30,10 +32,13 @@ class MsgDialogtrue {
               content: Text(msg),
               actions: <Widget>[
                 TextButton(
-                  child: Text("Quay trở lại để đăng nhập"),
+                  child: Text("Đã hoàn thành đăng kí, quay lại đăng nhập"),
                   onPressed: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => LoginPage()));
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                CreateNewAccountSuccessfully()));
                   },
                 )
               ],

@@ -293,7 +293,7 @@ class _CreateAccountState extends State<CreateAccount> {
                                   }, (msg) {
                                     // show msg dialog
                                     MsgDialog.showMsgDialog(context, 'Sign-in',
-                                        'Tài khoản đã tồn tại');
+                                        'Đã hoàn thành đăng kí, quay lại đăng nhập');
                                   });
                                 }
                               },
