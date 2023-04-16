@@ -11,6 +11,7 @@ class ResetPass extends StatelessWidget {
       title: 'Đặt lại mật khẩu',
       home: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.red,
           title: Text('Đặt lại mật khẩu'),
         ),
         body: Container(
@@ -43,7 +44,7 @@ class ResetPass extends StatelessWidget {
                     "Đặt lại mật khẩu của bạn",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
+                        color: Colors.red,
                         fontSize: 30),
                   ),
                 ),
@@ -117,6 +118,11 @@ class ResetPass extends StatelessWidget {
                           Flexible(
                             //flex: 3,
                             child: ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.red),
+                              ),
                               onPressed: () {
                                 Navigator.pushReplacement(
                                     context,
@@ -137,6 +143,11 @@ class ResetPass extends StatelessWidget {
                           Flexible(
                             //flex: 2,
                             child: ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.red),
+                              ),
                               onPressed: () {
                                 Navigator.pushReplacement(
                                     context,

@@ -145,6 +145,8 @@ class _Inside extends State<Inside> {
                         print(allUser[allUser.keys.elementAt(i)]!['HoTen']);
                         usernhantien =
                             allUser[allUser.keys.elementAt(i)]!['HoTen'];
+                        TransferDontDestroyOnLoad.receiverID =
+                            allUser.keys.elementAt(i);
                         _receiverInvalid = true;
                       }
                     }
@@ -196,10 +198,13 @@ class _Inside extends State<Inside> {
         ),
         Center(
             child: ElevatedButton(
+                // đổi sang màu green
+                style: ElevatedButton.styleFrom(
+                    primary: Colors.lightGreen[700],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10))),
                 onPressed: _receiverInvalid
                     ? (() {
-                        TransferDontDestroyOnLoad.receiverID =
-                            _receiverController.text;
                         Navigator.push(context, _createRoute());
                       })
                     : null,

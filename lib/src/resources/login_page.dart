@@ -63,7 +63,7 @@ class _LoginPage extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.blue.shade600,
+      backgroundColor: Color.fromARGB(255, 251, 44, 44),
       body: Container(
         padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
         constraints: BoxConstraints.expand(),
@@ -89,7 +89,7 @@ class _LoginPage extends State<LoginPage> {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 10, 0, 30),
               child: Text(
-                "Xin chào \nFintech Of JunctionX Hanoi 2023",
+                " 😁 Xin chào Fintech\nJunctionX Hanoi 2023",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
@@ -150,7 +150,7 @@ class _LoginPage extends State<LoginPage> {
                       child: Text(
                         showPass ? "Hiển thị" : "Ẩn",
                         style: TextStyle(
-                            color: Colors.blue,
+                            color: Color.fromARGB(255, 251, 44, 44),
                             fontSize: 13,
                             fontWeight: FontWeight.bold),
                       ),
@@ -163,6 +163,10 @@ class _LoginPage extends State<LoginPage> {
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.red),
+                  ),
                   onPressed: () {
                     checkAccount();
                   },
@@ -193,7 +197,9 @@ class _LoginPage extends State<LoginPage> {
                           },
                           child: Text(
                             "Bạn chưa có Tài Khoản ?",
-                            style: TextStyle(color: Colors.blue, fontSize: 15),
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 251, 44, 44),
+                                fontSize: 15),
                           ),
                         ),
                       ),
@@ -211,7 +217,9 @@ class _LoginPage extends State<LoginPage> {
                           },
                           child: Text(
                             "Quên Mật Khẩu",
-                            style: TextStyle(color: Colors.blue, fontSize: 15),
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 251, 44, 44),
+                                fontSize: 15),
                           ),
                         ),
                       )

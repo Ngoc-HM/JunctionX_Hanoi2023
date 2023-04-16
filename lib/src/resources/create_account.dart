@@ -48,8 +48,13 @@ class _CreateAccountState extends State<CreateAccount> {
       title: 'Đăng Kí Thành Viên Mới',
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Đăng Kí Thành Viên Mới'),
-        ),
+            backgroundColor: Colors.red,
+            title: Text(
+              'Đăng Kí Thành Viên Mới',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            )),
         body: Container(
             padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
             constraints: BoxConstraints.expand(),
@@ -64,8 +69,8 @@ class _CreateAccountState extends State<CreateAccount> {
                   child: Text(
                     "Trang đăng kí thành viên",
                     style: TextStyle(
+                        color: Colors.red,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
                         fontSize: 30),
                   ),
                 ),
@@ -75,7 +80,7 @@ class _CreateAccountState extends State<CreateAccount> {
                     stream: authBloc.nameStream,
                     builder: (context, snapshot) => TextField(
                       controller: _nameController,
-                      style: TextStyle(fontSize: 18, color: Colors.black),
+                      style: TextStyle(fontSize: 18, color: Colors.red),
                       decoration: InputDecoration(
                           errorText: snapshot.hasError
                               ? snapshot.error.toString()
@@ -235,6 +240,11 @@ class _CreateAccountState extends State<CreateAccount> {
                           Flexible(
                             //flex: 3,
                             child: ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.red),
+                              ),
                               onPressed: () {
                                 Navigator.pushReplacement(
                                     context,
@@ -255,6 +265,11 @@ class _CreateAccountState extends State<CreateAccount> {
                           Flexible(
                             //flex: 2,
                             child: ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.red),
+                              ),
                               onPressed: () {
                                 if (authBloc.isValidAcc(
                                   _nameController.text,
@@ -290,7 +305,6 @@ class _CreateAccountState extends State<CreateAccount> {
                             ),
                           )
                         ],
-                        
                       ),
                     )),
               ],
