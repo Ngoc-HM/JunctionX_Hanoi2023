@@ -49,9 +49,9 @@ class TransferPage extends StatelessWidget {
 }
 
 class TransferInfoScreen extends StatefulWidget {
-  String senderID = "";
-  String receiverID = "";
-  int money = 0;
+  final String senderID;
+  final String receiverID;
+  final int money;
 
   TransferInfoScreen(
       {Key? key,
@@ -75,9 +75,9 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
   bool _sotienVal = false;
   bool _tinnhanVal = false;
 
-  String senderID = "";
-  String receiverID = TransferDontDestroyOnLoad.receiverID;
-  int money = 0;
+  final String senderID;
+  final String receiverID;
+  final int money;
 
   _TransferInfoScreen(
       {Key? key,
@@ -119,7 +119,7 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
                   Expanded(
                     flex: 10,
                     child: Text(
-                        "${(remainUser.values as Map<dynamic, dynamic>)['HoTen']}\n${NumberFormat("\$#,##0").format((remainUser.values as Map<dynamic, dynamic>)['name'])}"),
+                        "${remainUser[senderID]!['HoTen']}\n${NumberFormat("\$#,##0").format((remainUser[senderID]!['money']))}"),
                   )
                 ],
               )),
@@ -143,7 +143,7 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
                 children: [
                   Expanded(
                     flex: 10,
-                    child: AujustText(receiverID),
+                    child: Text("${allUser[receiverID]!['HoTen']}\n${allUser[receiverID]!['name']}", textAlign: TextAlign.end),
                   ),
                   Expanded(
                     flex: 2,
@@ -209,7 +209,7 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
               onPressed: () {
                 if (bloc.isValidAcc(
                     _sotienController.text, _tinnhanController.text)) {
-                  if ((remainUser.values as Map<dynamic, dynamic>)['money'] <
+                  if (remainUser[senderID]!['money'] <
                       int.parse(_sotienController.text)) {
                     showDialog(
                         context: context,
@@ -237,44 +237,29 @@ class _TransferInfoScreen extends State<TransferInfoScreen> {
                             .then((value) {
                           //SendInMoney last = SendInMoney(senderID: testUser.name, receiverID: receiverID, amount: int.parse(_sotienController.text), content: _tinnhanController.text);
                           if (value) {
-                            db.updateDataInDatabase(
-                                remainUser.keys.first,
-                                'money',
-                                ((remainUser.values
-                                            as Map<dynamic, dynamic>)['money'] -
-                                        int.parse(_sotienController.text))
-                                    .toString());
-                            //Lấy thông tin người gửi để cập nhật
-                            late String receiverid;
-                            db
-                                .getChildNameByAttribute('name', receiverID)
-                                .then((value) {
-                              receiverid = value;
-                            });
-                            db.updateDataInDatabase(
-                                receiverid,
-                                'money',
-                                ((remainUser.values
-                                            as Map<dynamic, dynamic>)['money'] +
-                                        int.parse(_sotienController.text))
-                                    .toString());
-                            (remainUser.values
-                                as Map<dynamic, dynamic>)['money'] = (remainUser
-                                    .values as Map<dynamic, dynamic>)['money'] -
+                            // db.updateDataInDatabase(
+                            //     remainUser.keys.first,
+                            //     'money',
+                            //     (remainUser.values.first['money'] -
+                            //             int.parse(_sotienController.text))
+                            //         .toString());
+                            // //Lấy thông tin người gửi để cập nhật
+                            // db.updateDataInDatabase(
+                            //     receiverID,
+                            //     'money',
+                            //     (allUser[receiverID]!['money'] +
+                            //             int.parse(_sotienController.text))
+                            //         .toString());
+                            remainUser.values.first['money'] = remainUser.values.first['money'] -
                                 int.parse(_sotienController.text);
-                            SendInMoney last = SendInMoney(
-                                senderID: (remainUser.values
-                                    as Map<dynamic, dynamic>)['name'],
-                                receiverID: receiverid,
-                                amount: int.parse(_sotienController.text),
-                                content: _tinnhanController.text,
-                                time: DateTime.now());
+                            allUser[receiverID]!['money'] = allUser[receiverID]!['money'] +
+                                int.parse(_sotienController.text);
                             db.addNewRowToDatabase('history', {
-                              'senderID': last.senderID,
-                              'receiverID': last.receiverID,
-                              'amount': last.amount.toString(),
-                              'content': last.content,
-                              'time': last.time.toString()
+                              'senderID': senderID,
+                              'receiverID': receiverID,
+                              'amount': _sotienController.text,
+                              'content': _tinnhanController.text,
+                              'time': DateTime.now().toString()
                             });
                             showDialog(
                                 context: context,
