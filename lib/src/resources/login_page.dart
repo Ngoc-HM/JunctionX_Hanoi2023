@@ -48,12 +48,13 @@ class _LoginPage extends State<LoginPage> {
   var _passwordError = "Mật khẩu phải trên 6 kí tự";
 
   void checkAccount() async {
-    bool test = await bloc.isValidInfo(_usernameController.text, _passwordController.text);
+    bool test = await bloc.isValidInfo(
+        _usernameController.text, _passwordController.text);
     remainUser = await db.getUserInfo('name', _usernameController.text);
     allUser = await db.getAllUserInfo();
 
     if (test && remainUser != RemainUser("")) {
-      print(allUser.toString());
+      //print(allUser.toString());
       Navigator.pushReplacementNamed(context, "/");
     }
   }
@@ -162,7 +163,9 @@ class _LoginPage extends State<LoginPage> {
                 width: double.infinity,
                 height: 56,
                 child: ElevatedButton(
-                  onPressed: () { checkAccount(); },
+                  onPressed: () {
+                    checkAccount();
+                  },
                   child: Text(
                     "Đăng nhập",
                     // cho chữ đăng nhập to hơn
@@ -220,8 +223,8 @@ class _LoginPage extends State<LoginPage> {
         ),
       ),
     );
-
   }
+
   static String username = _LoginPage()._usernameController.text;
   static String password = _LoginPage()._passwordController.text;
 }

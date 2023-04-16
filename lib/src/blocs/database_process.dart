@@ -11,12 +11,15 @@ class DatabaseProcess {
     bool res;
     try {
       res = false;
-      DatabaseEvent event = await FirebaseDatabase.instance.ref().child('user').once();
+      DatabaseEvent event =
+          await FirebaseDatabase.instance.ref().child('user').once();
       DataSnapshot dataSnapshot = event.snapshot;
-      Map<dynamic, dynamic> values = dataSnapshot.value as Map<dynamic, dynamic>;
+      Map<dynamic, dynamic> values =
+          dataSnapshot.value as Map<dynamic, dynamic>;
 
       values.forEach((key, value) {
-        print("${value['name'].toString()} == ${username} and ${value['password'].toString()} == ${password}");
+        print(
+            "${value['name'].toString()} == ${username} and ${value['password'].toString()} == ${password}");
         if (value['name'] == username && value['password'] == password) {
           res = true;
         }
@@ -27,81 +30,36 @@ class DatabaseProcess {
       return false;
     }
   }
-  // check login information valid or not
-  // Future<String> signIn(String email, String password) async {
-  //   try {
-  //     DatabaseEvent event = await FirebaseDatabase.instance.ref().child('user').once();
-  //     DataSnapshot dataSnapshot = event.snapshot;
-  //     UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-  //         email: email,
-  //         password: password
-  //     );
-  //     return userCredential.user!.uid;
-  //     // Đăng nhập thành công, userCredential.user sẽ chứa thông tin người dùng đã đăng nhập
-  //   } on FirebaseAuthException catch (e) {
-  //     // Xử lý lỗi nếu có
-  //    /* showDialog(
-  //         context: context,
-  //         builder: (context) {
-  //           return AlertDialog(
-  //             title: Text("Lỗi"),
-  //             content: Text(e.message!),
-  //             actions: [
-  //               TextButton(
-  //                 child: Text("OK"),
-  //                 onPressed: () {
-  //                   Navigator.of(context).pop();
-  //                 },
-  //               )
-  //             ],
-  //           );
-  //         }
-  //     );*/
-  //     return "";
-  //   }
-  // }
-  // //Lấy id của user
-
 
   // Truy vấn tên child node trong Realtime Database dựa trên 2 thuộc tính
-  Future<Map<dynamic, Map<dynamic, dynamic>> > getUserInfo(String attribute1, String value1) async {
+  Future<Map<dynamic, Map<dynamic, dynamic>>> getUserInfo(
+      String attribute1, String value1) async {
     DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
     RemainUser curr = RemainUser("");
     bool isFound = false;
 
     try {
       // Sử dụng phương thức orderByChild và equalTo để lọc các child node có giá trị trường dữ liệu của 2 thuộc tính trùng khớp với tham số được cung cấp
-      Query query = databaseReference.child('user')
-          .orderByChild(attribute1).equalTo(value1);
+      Query query = databaseReference
+          .child('user')
+          .orderByChild(attribute1)
+          .equalTo(value1);
       DatabaseEvent event = await query.once();
       DataSnapshot dataSnapshot = await event.snapshot;
       Map<dynamic, dynamic> list = dataSnapshot.value as Map<dynamic, dynamic>;
       print(list.toString());
       Map<dynamic, Map<dynamic, dynamic>> list2 = {};
-      list.forEach((key, value) {list2[key] = value as Map<dynamic, dynamic>;});
+      list.forEach((key, value) {
+        list2[key] = value as Map<dynamic, dynamic>;
+      });
       return list2;
-      // Kiểm tra xem dữ liệu có tồn tại hay không
-      // if (list != null) {
-      //   isFound = true;
-      // }
-      // if (isFound == true) {
-      //   print("Boo");
-      //   curr.USER_ID = list.keys.first.toString();
-      //   curr.user.accountName = list[curr.USER_ID]['name'].toString();
-      //   curr.user.name = list[curr.USER_ID]['HoTen'].toString();
-      //   curr.user.money = list[curr.USER_ID]['money'];
-      // } else {
-      //   print('Không tìm thấy dữ liệu với $attribute1: $value1');
-      // }
-      // return Future.value(curr);
     } catch (e) {
       print('Lỗi khi truy vấn dữ liệu: $e');
       return {};
     }
-
   }
 
-  Future<Map<dynamic, Map<dynamic, dynamic>> > getAllUserInfo() async {
+  Future<Map<dynamic, Map<dynamic, dynamic>>> getAllUserInfo() async {
     DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
     RemainUser curr = RemainUser("");
     bool isFound = false;
@@ -114,27 +72,14 @@ class DatabaseProcess {
       Map<dynamic, dynamic> list = dataSnapshot.value as Map<dynamic, dynamic>;
       print(list.toString());
       Map<dynamic, Map<dynamic, dynamic>> list2 = {};
-      list.forEach((key, value) {list2[key] = value as Map<dynamic, dynamic>;});
+      list.forEach((key, value) {
+        list2[key] = value as Map<dynamic, dynamic>;
+      });
       return list2;
-      // Kiểm tra xem dữ liệu có tồn tại hay không
-      // if (list != null) {
-      //   isFound = true;
-      // }
-      // if (isFound == true) {
-      //   print("Boo");
-      //   curr.USER_ID = list.keys.first.toString();
-      //   curr.user.accountName = list[curr.USER_ID]['name'].toString();
-      //   curr.user.name = list[curr.USER_ID]['HoTen'].toString();
-      //   curr.user.money = list[curr.USER_ID]['money'];
-      // } else {
-      //   print('Không tìm thấy dữ liệu với $attribute1: $value1');
-      // }
-      // return Future.value(curr);
     } catch (e) {
       print('Lỗi khi truy vấn dữ liệu: $e');
       return {};
     }
-
   }
 
   // Truy vấn tên child node trong Realtime Database dựa trên 1 thuộc tính
@@ -144,8 +89,10 @@ class DatabaseProcess {
 
     try {
       // Sử dụng phương thức orderByChild và equalTo để lọc các child node có giá trị trường dữ liệu của thuộc tính trùng khớp với tham số được cung cấp
-      Query query = databaseReference.child('your_parent_node_name')
-          .orderByChild(attribute).equalTo(value);
+      Query query = databaseReference
+          .child('your_parent_node_name')
+          .orderByChild(attribute)
+          .equalTo(value);
       DatabaseEvent event = await query.once();
       DataSnapshot dataSnapshot = await event.snapshot;
       // Kiểm tra xem dữ liệu có tồn tại hay không
@@ -165,12 +112,14 @@ class DatabaseProcess {
 
     return childName;
   }
+
   // Rút giá trị của một hàng trong Realtime Database
-  Future<Map<String,String?> > getDataFromDatabase(String nodeId) async {
+  Future<Map<String, String?>> getDataFromDatabase(String nodeId) async {
     DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
-    Map<String,String?> data = {"name": "", "HoTen": "", "money": "0"};
+    Map<String, String?> data = {"name": "", "HoTen": "", "money": "0"};
     try {
-      DatabaseEvent event = await databaseReference.child('user').child(nodeId).once();
+      DatabaseEvent event =
+          await databaseReference.child('user').child(nodeId).once();
       DataSnapshot dataSnapshot = event.snapshot;
       // Kiểm tra xem dữ liệu có tồn tại hay không
       Map<dynamic, dynamic> list = dataSnapshot.value as Map<dynamic, dynamic>;
@@ -191,12 +140,16 @@ class DatabaseProcess {
   }
 
 // Cập nhật dữ liệu của một cột trong Realtime Database
-  Future<void> updateDataInDatabase(String childNode, String columnName, String columnValue) async {
+  Future<void> updateDataInDatabase(
+      String childNode, String columnName, String columnValue) async {
     DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
 
     try {
       // Sử dụng phương thức orderByChild và equalTo để lọc các child node có giá trị trường dữ liệu trùng khớp với tham số được cung cấp
-      Query query = databaseReference.child(childNode).orderByChild(columnName).equalTo(columnValue);
+      Query query = databaseReference
+          .child(childNode)
+          .orderByChild(columnName)
+          .equalTo(columnValue);
       DatabaseEvent event = await query.once();
       DataSnapshot dataSnapshot = await event.snapshot;
       // Kiểm tra xem dữ liệu có tồn tại hay không
@@ -205,7 +158,10 @@ class DatabaseProcess {
         // Lặp qua tất cả các child node tìm được
         list.forEach((nodeId, nodeData) {
           // Cập nhật dữ liệu cho child node có nodeId tương ứng
-          databaseReference.child(childNode).child(nodeId).update({columnName: columnValue});
+          databaseReference
+              .child(childNode)
+              .child(nodeId)
+              .update({columnName: columnValue});
         });
       } else {
         print('Không tìm thấy dữ liệu với $columnName: $columnValue');
@@ -219,7 +175,11 @@ class DatabaseProcess {
   Future<bool> checkReceiverName(String receiverName) async {
     DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
     try {
-      DatabaseEvent event = await databaseReference.child('user').orderByChild('name').equalTo(receiverName).once();
+      DatabaseEvent event = await databaseReference
+          .child('user')
+          .orderByChild('name')
+          .equalTo(receiverName)
+          .once();
       DataSnapshot dataSnapshot = event.snapshot;
       // Kiểm tra xem dữ liệu có tồn tại hay không
       if (dataSnapshot.value != null) {
@@ -235,7 +195,8 @@ class DatabaseProcess {
   }
 
   // Thêm dòng mới vào child tương ứng trong Realtime Database
-  Future<void> addNewRowToDatabase(String childNode, Map<String, dynamic> data) async {
+  Future<void> addNewRowToDatabase(
+      String childNode, Map<String, dynamic> data) async {
     DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
 
     try {
@@ -248,15 +209,30 @@ class DatabaseProcess {
 
   //Trả về list 100 dòng thỏa mãn 1 value bằng 1 trong 2 giá trị cột nào đó
 
-
   //Trả về list 100 dòng thỏa mãn bằng giá trị cột nào đó được sắp xếp theo thứ tự giảm dần
-  Future<List<Map<String, dynamic>>> getTop100Rows(String childNode, String columnName, String columnValue, String columnName2, String columnValue2, String cmp) async {
+  Future<List<Map<String, dynamic>>> getTop100Rows(
+      String childNode,
+      String columnName,
+      String columnValue,
+      String columnName2,
+      String columnValue2,
+      String cmp) async {
     DatabaseReference databaseReference = FirebaseDatabase.instance.ref();
     List<Map<String, dynamic>> data = [];
     try {
       // Sử dụng phương thức orderByChild và equalTo để lọc các child node có giá trị trường dữ liệu trùng khớp với tham số được cung cấp
-      Query query1 = databaseReference.child(childNode).orderByChild(columnName).equalTo(columnValue).orderByChild(cmp).limitToLast(100);
-      Query query2 = databaseReference.child(childNode).orderByChild(columnName2).equalTo(columnValue2).orderByChild(cmp).limitToLast(100);
+      Query query1 = databaseReference
+          .child(childNode)
+          .orderByChild(columnName)
+          .equalTo(columnValue)
+          .orderByChild(cmp)
+          .limitToLast(100);
+      Query query2 = databaseReference
+          .child(childNode)
+          .orderByChild(columnName2)
+          .equalTo(columnValue2)
+          .orderByChild(cmp)
+          .limitToLast(100);
       //Ghép 2 query lại và sắp xếp
       DatabaseEvent event1 = await query1.once();
       DatabaseEvent event2 = await query2.once();
@@ -267,15 +243,16 @@ class DatabaseProcess {
       Map<String, Object> list2 = dataSnapshot2.value as Map<String, Object>;
       if (dataSnapshot1.value != null && dataSnapshot2.value != null) {
         // Lặp qua tất cả các child node tìm được
-        int i = 0, j =0;
-        while(i < list1.length && j < list2.length){
-          Map<String, dynamic> temp1 = list1.values.elementAt(i) as Map<String, dynamic>;
-          Map<String, dynamic> temp2 = list2.values.elementAt(j) as Map<String, dynamic>;
-          if(temp1[cmp] > temp2[cmp]){
+        int i = 0, j = 0;
+        while (i < list1.length && j < list2.length) {
+          Map<String, dynamic> temp1 =
+              list1.values.elementAt(i) as Map<String, dynamic>;
+          Map<String, dynamic> temp2 =
+              list2.values.elementAt(j) as Map<String, dynamic>;
+          if (temp1[cmp] > temp2[cmp]) {
             data.add(temp1);
             i++;
-          }
-          else{
+          } else {
             data.add(temp2);
             j++;
           }
